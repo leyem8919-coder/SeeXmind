@@ -6,7 +6,7 @@ SeeXmind previews the PNG image embedded in a local `.xmind` file without re-ren
 
 ### Installation
 
-1. Download `main.js`, `manifest.json`, and `styles.css` from [GitHub Releases](https://github.com/leyem8919-coder/SeeXmind/releases/tag/0.1.1).
+1. Download `main.js`, `manifest.json`, and `styles.css` from [GitHub Releases](https://github.com/leyem8919-coder/SeeXmind/releases/tag/0.1.2).
 2. Create `.obsidian/plugins/seexmind/` inside your vault and place those three files directly inside it.
 3. Reload the community plugin list in Obsidian settings and enable **SeeXmind**.
 4. We recommend installing [Xmind from its official website](https://xmind.com/) separately for editing. Previewing embedded images does not require Xmind. On Windows, associate `.xmind` files with Xmind or specify the executable path in SeeXmind settings.
@@ -43,7 +43,7 @@ SeeXmind 是面向 macOS 和 Windows 桌面版 Obsidian 的独立第三方插件
 
 ## 安装
 
-当前版本 **0.1.1**，尚未在 Obsidian 社区插件市场上架。支持 Obsidian 桌面版 1.5.0 或更新版本；macOS 已完成核心功能实测，Windows 实际桌面验证仍待完成。
+当前版本 **0.1.2**，尚未在 Obsidian 社区插件市场上架。支持 Obsidian 桌面版 1.5.0 或更新版本；macOS 已完成核心功能实测，Windows 实际桌面验证仍待完成。
 
 1. 从 [Releases](https://github.com/leyem8919-coder/SeeXmind/releases) 下载 `main.js`、`manifest.json`、`styles.css`（不是 Source code 压缩包）。
 2. 在库内建立 `.obsidian/plugins/seexmind/` 文件夹，将这三个文件放进去。

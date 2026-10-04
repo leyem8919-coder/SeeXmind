@@ -1,4 +1,4 @@
-SeeXmind 0.1.1 fixes directory review findings while retaining custom Xmind application paths.
+SeeXmind 0.1.2 fixes directory review findings while retaining custom Xmind application paths.
 
 - Pure in-memory ZIP preview reading through the Obsidian Vault API; no runtime Node filesystem dependency.
 - CSS selectors no longer use `!important`.
@@ -8,3 +8,5 @@ SeeXmind 0.1.1 fixes directory review findings while retaining custom Xmind appl
 - GitHub attestations cover assembly of these public distribution files. Private-source compilation is verified separately by the Obsidian directory against the matching private tag.
 
 Install these three files in `.obsidian/plugins/seexmind/`, then reload SeeXmind. Windows GUI testing remains pending. Embedded previews in ZIP64 or split ZIP archives are not supported.
+
+Also fixes private-source review errors: preserve panes on unload, use standard setting headings, validate saved settings, use window timers, and expose custom paths in settings search.

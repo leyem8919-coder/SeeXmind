@@ -1,5 +1,12 @@
 # Changelog / 更新记录
 
+## 0.1.2 — 2026-10-05
+
+- Preserve workspace pane positions when unloading the plugin.
+- Use standard settings headings and window timers.
+- Validate loaded settings instead of assigning untyped data.
+- Make custom application paths searchable using Obsidian 1.13's declarative settings API, with an older-version rendering fallback.
+
 ## 0.1.1 — 2026-10-05
 
 - Replace the ZIP reader with bounded in-memory parsing; remove runtime filesystem dependencies. Reject corrupt checksums, inconsistent entries, unsupported ZIP64/split archives, and dishonest decompressed sizes.

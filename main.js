@@ -795,7 +795,13 @@ var SeeXmind = class extends import_obsidian.Plugin {
     this.opening = /* @__PURE__ */ new Set();
   }
   async onload() {
-    this.settings = { ...DEFAULTS, ...await this.loadData() };
+    const stored = await this.loadData();
+    if (stored && typeof stored === "object") {
+      this.settings = {
+        macApp: "macApp" in stored && typeof stored.macApp === "string" ? stored.macApp : "",
+        windowsApp: "windowsApp" in stored && typeof stored.windowsApp === "string" ? stored.windowsApp : ""
+      };
+    }
     this.registerView(VIEW_TYPE, (leaf) => new XmindView(leaf, this));
     try {
       this.registerExtensions(["xmind"], VIEW_TYPE);
@@ -840,9 +846,6 @@ var SeeXmind = class extends import_obsidian.Plugin {
     };
     attach(document);
     this.registerEvent(this.app.workspace.on("window-open", (_win, win) => attach(win.document)));
-  }
-  onunload() {
-    this.app.workspace.detachLeavesOfType(VIEW_TYPE);
   }
   async openInXmind(file) {
     if (this.opening.has(file.path)) return;
@@ -979,8 +982,8 @@ var XmindView = class extends import_obsidian.FileView {
     }));
   }
   scheduleRefresh() {
-    clearTimeout(this.refreshTimer);
-    this.refreshTimer = setTimeout(() => {
+    window.clearTimeout(this.refreshTimer);
+    this.refreshTimer = window.setTimeout(() => {
       if (this.file) void this.onLoadFile(this.file);
     }, 400);
   }
@@ -1043,7 +1046,7 @@ var XmindView = class extends import_obsidian.FileView {
   }
   async onUnloadFile() {
     ++this.generation;
-    clearTimeout(this.refreshTimer);
+    window.clearTimeout(this.refreshTimer);
     this.clearImage();
   }
   async onClose() {
@@ -1055,9 +1058,33 @@ var XmindSettings = class extends import_obsidian.PluginSettingTab {
     super(app, plugin);
     this.plugin = plugin;
   }
+  getSettingDefinitions() {
+    return [
+      {
+        name: "Mac: Xmind \u5E94\u7528\u8DEF\u5F84",
+        desc: "\u53EF\u9009\uFF1AXmind .app \u7684\u5B8C\u6574\u8DEF\u5F84\uFF1B\u7559\u7A7A\u4F7F\u7528\u672C\u673A Xmind\u3002",
+        control: { type: "text", key: "macApp", defaultValue: "", placeholder: "/Applications/Xmind.app" }
+      },
+      {
+        name: "Windows: Xmind.exe \u8DEF\u5F84",
+        desc: "\u53EF\u9009\uFF1A\u5B8C\u6574 .exe \u8DEF\u5F84\uFF0C\u4E0D\u52A0\u5F15\u53F7\u6216\u53C2\u6570\uFF1B\u7559\u7A7A\u4F7F\u7528\u7CFB\u7EDF\u6587\u4EF6\u5173\u8054\u3002",
+        control: { type: "text", key: "windowsApp", defaultValue: "", placeholder: "C:\\\u2026\\Xmind.exe" }
+      }
+    ];
+  }
+  getControlValue(key) {
+    return key === "macApp" || key === "windowsApp" ? this.plugin.settings[key] : void 0;
+  }
+  async setControlValue(key, value) {
+    if ((key === "macApp" || key === "windowsApp") && typeof value === "string") {
+      this.plugin.settings[key] = value;
+      await this.plugin.saveData(this.plugin.settings);
+    }
+  }
+  // Compatibility rendering for Obsidian versions before the declarative settings API.
   display() {
     this.containerEl.empty();
-    this.containerEl.createEl("h2", { text: "SeeXmind" });
+    new import_obsidian.Setting(this.containerEl).setName("SeeXmind").setHeading();
     this.containerEl.createEl("p", { text: "\u9884\u89C8\u5B8C\u5168\u5728\u672C\u5730\u5B8C\u6210\u3002\u5355\u51FB\u6587\u4EF6\u67E5\u770B\u9884\u89C8\uFF0C\u53CC\u51FB\u7528 Xmind \u6253\u5F00\u3002" });
     new import_obsidian.Setting(this.containerEl).setName("Mac\uFF1AXmind \u5E94\u7528\u8DEF\u5F84\uFF08\u53EF\u9009\uFF09").setDesc("\u901A\u5E38\u7559\u7A7A\u5373\u53EF\u3002\u591A\u4E2A\u7248\u672C\u5171\u5B58\u65F6\u53EF\u6307\u5B9A .app \u8DEF\u5F84\u3002").addText((text) => text.setPlaceholder("/Applications/Xmind.app").setValue(this.plugin.settings.macApp).onChange(async (value) => {
       this.plugin.settings.macApp = value;
