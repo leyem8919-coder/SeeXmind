@@ -1,5 +1,9 @@
 # Changelog / 更新记录
 
+## 0.1.3 — 2026-10-05
+
+- Remove the redundant plugin-name heading from the legacy settings renderer. Custom application paths are unchanged.
+
 ## 0.1.2 — 2026-10-05
 
 - Preserve workspace pane positions when unloading the plugin.
