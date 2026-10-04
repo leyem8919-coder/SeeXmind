@@ -1,0 +1,10 @@
+.seexmind-view { display: flex; flex-direction: column; height: 100%; padding: 0 !important; overflow: hidden; }
+.seexmind-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--background-modifier-border); }
+.seexmind-toolbar button { cursor: pointer; }
+.seexmind-scale { min-width: 44px; text-align: center; font-variant-numeric: tabular-nums; font-size: var(--font-ui-small); }
+.seexmind-status { padding: 8px 16px; color: var(--text-muted); font-size: var(--font-ui-small); }
+.seexmind-stage { position: relative; flex: 1; min-height: 160px; overflow: hidden; background: #fff; cursor: grab; touch-action: none; }
+.seexmind-stage.is-dragging { cursor: grabbing; }
+.seexmind-image { position: absolute; left: 50%; top: 50%; max-width: none !important; max-height: none !important; transform-origin: center; user-select: none; pointer-events: none; }
+.seexmind-image[hidden] { display: none; }
+.seexmind-footer { padding: 8px 16px; color: var(--text-muted); font-size: var(--font-ui-smaller); border-top: 1px solid var(--background-modifier-border); }
