@@ -1,5 +1,28 @@
 # SeeXmind
 
+## English
+
+SeeXmind previews the PNG image embedded in a local `.xmind` file without re-rendering its layout. Single-click a file in Obsidian to preview it; double-click to open the original in the desktop Xmind application. Zoom, pan, fit to window, and refresh after saved-file changes are supported.
+
+### Installation
+
+1. Download `seexmind-0.1.0.zip` from [GitHub Releases](https://github.com/leyem8919-coder/SeeXmind/releases/tag/0.1.0).
+2. Extract the `seexmind` folder into your vault's `.obsidian/plugins/` folder. It must directly contain `main.js`, `manifest.json`, and `styles.css`.
+3. Reload the community plugin list in Obsidian settings and enable **SeeXmind**.
+4. We recommend installing [Xmind from its official website](https://xmind.com/) separately for editing. Previewing embedded images does not require Xmind. On Windows, associate `.xmind` files with Xmind or specify the executable path in SeeXmind settings.
+
+### Usage
+
+Place an `.xmind` file inside your vault. Single-click it in the file explorer to preview, and double-click to edit it in Xmind. Use the mouse wheel or toolbar to zoom, drag to pan, and choose Fit to view the whole preview. Save changes in Xmind before refreshing. A missing, encrypted, outdated, or low-resolution embedded preview cannot be reconstructed by this plugin. Multi-sheet files may provide only one preview image.
+
+### Privacy, permissions, and project status
+
+SeeXmind itself makes no network requests and has no uploads, analytics, telemetry, or accounts. It reads selected vault files through Obsidian, stores optional application paths locally, and launches an installed application only on a user action. Its ZIP dependency includes Node filesystem support; the preview path uses its in-memory archive reader. Desktop app opening uses Node process APIs and does not execute shell command strings. Xmind, Obsidian, network drives, and synchronization services operate under their own policies. See [PRIVACY.md](PRIVACY.md) for details.
+
+This independent project is not affiliated with, sponsored by, or endorsed by Xmind or Obsidian. It does not bundle their applications or bypass licenses, paid features, or encryption. Distributed files retain the existing [Apache-2.0 license](LICENSE) and [dependency notices](THIRD_PARTY_NOTICES.md); privately maintained source does not make the distributed JavaScript unreadable or proprietary. The plugin is desktop-only: macOS core behavior is tested; Windows GUI verification is pending. It has not yet been approved or published in the Obsidian community directory.
+
+---
+
 **在 Obsidian 中预览，在 Xmind 中编辑。**
 
 SeeXmind 是面向 macOS 和 Windows 桌面版 Obsidian 的独立第三方插件。单击 `.xmind` 查看内置预览，双击使用本机 Xmind 打开原文件。
