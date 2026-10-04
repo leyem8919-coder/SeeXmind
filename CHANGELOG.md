@@ -1,4 +1,15 @@
-# 更新记录
+# Changelog / 更新记录
+
+## 0.1.1 — 2026-10-05
+
+- Replace the ZIP reader with bounded in-memory parsing; remove runtime filesystem dependencies. Reject corrupt checksums, inconsistent entries, unsupported ZIP64/split archives, and dishonest decompressed sizes.
+- Remove CSS `!important` using view-scoped selectors.
+- Retain custom macOS `.app` and Windows `.exe` paths, with stricter Mac path validation. User-triggered process launching remains explicitly disclosed.
+- Add English installation and usage instructions to both distribution and source documentation.
+- Distribute only Obsidian's three installation assets. Preserve license notices inside `main.js` and in the repository.
+- Add a public distribution workflow and artifact provenance; private source rebuild verification remains separate.
+- Windows GUI verification remains pending.
+
 
 ## 0.1.0 — 2026-10-05
 

@@ -6,8 +6,8 @@ SeeXmind previews the PNG image embedded in a local `.xmind` file without re-ren
 
 ### Installation
 
-1. Download `seexmind-0.1.0.zip` from [GitHub Releases](https://github.com/leyem8919-coder/SeeXmind/releases/tag/0.1.0).
-2. Extract the `seexmind` folder into your vault's `.obsidian/plugins/` folder. It must directly contain `main.js`, `manifest.json`, and `styles.css`.
+1. Download `main.js`, `manifest.json`, and `styles.css` from [GitHub Releases](https://github.com/leyem8919-coder/SeeXmind/releases/tag/0.1.1).
+2. Create `.obsidian/plugins/seexmind/` inside your vault and place those three files directly inside it.
 3. Reload the community plugin list in Obsidian settings and enable **SeeXmind**.
 4. We recommend installing [Xmind from its official website](https://xmind.com/) separately for editing. Previewing embedded images does not require Xmind. On Windows, associate `.xmind` files with Xmind or specify the executable path in SeeXmind settings.
 
@@ -17,7 +17,7 @@ Place an `.xmind` file inside your vault. Single-click it in the file explorer t
 
 ### Privacy, permissions, and project status
 
-SeeXmind itself makes no network requests and has no uploads, analytics, telemetry, or accounts. It reads selected vault files through Obsidian, stores optional application paths locally, and launches an installed application only on a user action. Its ZIP dependency includes Node filesystem support; the preview path uses its in-memory archive reader. Desktop app opening uses Node process APIs and does not execute shell command strings. Xmind, Obsidian, network drives, and synchronization services operate under their own policies. See [PRIVACY.md](PRIVACY.md) for details.
+SeeXmind itself makes no network requests and has no uploads, analytics, telemetry, or accounts. It reads selected vault files through Obsidian, stores optional application paths locally, and launches an installed application only on a user action. Previewing uses Obsidian’s Vault API and an in-memory ZIP reader; the bundled preview code does not import Node filesystem APIs. Desktop app opening uses Node process APIs and does not execute shell command strings. Xmind, Obsidian, network drives, and synchronization services operate under their own policies. See [PRIVACY.md](PRIVACY.md) for details.
 
 This independent project is not affiliated with, sponsored by, or endorsed by Xmind or Obsidian. It does not bundle their applications or bypass licenses, paid features, or encryption. Distributed files retain the existing [Apache-2.0 license](LICENSE) and [dependency notices](THIRD_PARTY_NOTICES.md); privately maintained source does not make the distributed JavaScript unreadable or proprietary. The plugin is desktop-only: macOS core behavior is tested; Windows GUI verification is pending. It has not yet been approved or published in the Obsidian community directory.
 
@@ -43,10 +43,10 @@ SeeXmind 是面向 macOS 和 Windows 桌面版 Obsidian 的独立第三方插件
 
 ## 安装
 
-当前版本 **0.1.0**，尚未在 Obsidian 社区插件市场上架。支持 Obsidian 桌面版 1.5.0 或更新版本；macOS 已完成核心功能实测，Windows 实际桌面验证仍待完成。
+当前版本 **0.1.1**，尚未在 Obsidian 社区插件市场上架。支持 Obsidian 桌面版 1.5.0 或更新版本；macOS 已完成核心功能实测，Windows 实际桌面验证仍待完成。
 
-1. 从 [Releases](https://github.com/leyem8919-coder/SeeXmind/releases) 下载 `seexmind-0.1.0.zip`（不是 Source code 压缩包）。
-2. 解压后，将 `seexmind` 文件夹放入你的库的 `.obsidian/plugins/`。文件夹内应直接包含 `main.js`、`manifest.json` 和 `styles.css`。
+1. 从 [Releases](https://github.com/leyem8919-coder/SeeXmind/releases) 下载 `main.js`、`manifest.json`、`styles.css`（不是 Source code 压缩包）。
+2. 在库内建立 `.obsidian/plugins/seexmind/` 文件夹，将这三个文件放进去。
 3. 在 Obsidian「设置 → 第三方插件」刷新列表并启用 **SeeXmind**。
 4. 将 `.xmind` 文件放进笔记库，在文件目录单击预览或双击打开。
 
@@ -72,12 +72,18 @@ SeeXmind 本身：
 
 完整说明见 [PRIVACY.md](PRIVACY.md)。
 
+## 权限提醒与发行校验
+
+自定义 Xmind 程序路径需要调用系统进程接口，因此审核工具可能显示 Shell Execution 提醒。插件只在用户主动打开文件时调用，使用参数数组，不使用 shell 命令字符串；此能力并非沙箱权限限制。
+
+GitHub 发行来源证明记录公开仓库如何组装并发布这三个安装文件，不宣称公开工作流编译了私有 TypeScript 源码。私有源码与发行文件的一致性由社区目录的 Source verified 构建校验单独确认。许可证和依赖声明仍保留在 main.js 内以及本仓库中。
+
 ## 功能范围与使用限制
 
 - 这是已保存图片的预览工具，不是 Xmind 编辑器、文件转换器或在线服务。
 - 清晰度取决于文件保存的 PNG；放大可能模糊，不能恢复原图中没有的细节。
 - 多画布文件的内置图片可能只覆盖一个画布，本版本不提供画布切换。
-- 缺少预览、文件加密、损坏或超出安全尺寸限制时会提示，不尝试绕过保护或猜测导图布局。
+- 缺少预览、文件加密、损坏使用暂不支持的 ZIP64 / 分卷压缩格式，或超出安全尺寸限制时会提示，不尝试绕过保护或猜测导图布局。
 - 未保存的编辑、尚未完成的文件同步，或 Xmind 未更新内置图片，可能导致预览显示旧内容。
 - 当前不支持 iOS、Android 或 Linux。超大文件限制：归档 128 MiB、预览 24 MiB、4000 万像素、单边 32768 像素。
 - Xmind 的安装、使用、账号、付费功能及服务条款由 Xmind 独立提供和管理；SeeXmind 不保证所有 Xmind 版本和文件格式都兼容。
