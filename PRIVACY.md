@@ -1,6 +1,6 @@
 # SeeXmind privacy / 隐私说明
 
-Applies to version 0.2.3. Updated 2026-10-05.
+Applies to version 0.3.0. Updated 2026-10-05.
 
 ## Local processing
 
@@ -12,9 +12,9 @@ The plugin listens for vault file changes to refresh active previews. Applicatio
 
 SeeXmind does not initiate network requests, operate a backend, load remote scripts, upload documents, collect personal information, track usage, show ads, or send telemetry/crash reports. It requires no SeeXmind account, credentials, or API key. This statement describes the implementation, not a security sandbox or permission restriction imposed by Obsidian.
 
-## External application capability warning
+## Desktop external application capability warning
 
-The directory may show **“Shell Execution / child_process”**. SeeXmind uses Node.js process-launching APIs to open Xmind on macOS (including a custom `.app`) or a user-selected `.exe` on Windows. Windows with no custom path uses the system file association.
+The directory may show **“Shell Execution / child_process”** for desktop opening. Mobile opening does not use Node.js or Electron. On desktop, SeeXmind uses Node.js process-launching APIs to open Xmind on macOS (including a custom `.app`) or a user-selected `.exe` on Windows. Windows with no custom path uses the system file association.
 
 - Launching happens only after you double-click a file or choose an Open in Xmind button, command, or menu item. Loading the plugin and displaying previews do not launch the application.
 - Local `.xmind` paths and custom application paths are validated. The executable and arguments are passed separately, without concatenated shell command strings or a shell interpreter.
@@ -25,7 +25,11 @@ We retain and disclose this capability to support custom application paths; we d
 
 ## Opening another application
 
-Only a user action (double-click, button, command, or file menu) opens the selected file externally. The plugin passes its local path to Xmind or the operating system file association. A custom application path uses process-launching APIs with argument arrays, not shell command strings. The chosen application receives access to that file and may edit it. The plugin does not access Xmind accounts or passwords.
+Only a user action opens or shares the selected file externally. On desktop, a double-click, button, command or file menu passes its local path to Xmind or the operating system file association. A custom application path uses process-launching APIs with argument arrays, not shell command strings. The chosen application receives access to that file and may edit it.
+
+On iPhone, iPad and Android, a button, command or file menu asks Obsidian to open or share the selected file. The plugin checks whether the host exposes its optional `app.openWithDefaultApp` method and passes the file's vault-relative path. Obsidian and the operating system handle file access and the receiving application. No desktop process-launching API is called on mobile. If direct opening is unavailable, the user can open the file from the system Files app or Xmind's Open from Files.
+
+A mobile handoff may create a copy in the receiving app. SeeXmind does not copy edits back automatically or guarantee that editing elsewhere changes the vault file. Save back to the same vault location or replace the vault file to update its preview. The plugin does not access Xmind accounts or passwords.
 
 Xmind, Obsidian, GitHub, network storage and synchronization services have independent network behavior and privacy policies. Downloading/updating this plugin, opening a network-mounted file, or using Xmind's cloud features may involve network access outside SeeXmind. Synchronizing the plugin configuration folder may also synchronize saved application paths.
 
@@ -37,13 +41,17 @@ Disable the plugin and remove its `seexmind` plugin folder to delete its local s
 
 插件仅在本机内存中读取选中的库内文件，解析内置 PNG 或导图结构，不修改导图，不扫描整个磁盘，不主动联网，不加载远程资源，不上传文件，不采集个人信息、行为统计、遥测或崩溃报告。
 
-应用路径及闲置不透明度保存在当前库的 `data.json`。缩放、平移和画布选择为临时内存状态。用户主动打开原文件时，插件将本地路径交给 Xmind 或系统默认应用；指定程序路径时使用参数数组启动程序，不执行拼接的 shell 命令字符串。
+应用路径及闲置不透明度保存在当前库的 `data.json`。缩放、平移和画布选择为临时内存状态。桌面端用户主动打开原文件时，插件将本地路径交给 Xmind 或系统默认应用；指定程序路径时使用参数数组启动程序，不执行拼接的 shell 命令字符串。
+
+iPhone、iPad 和 Android 上，插件仅在用户点击按钮、使用命令或文件菜单时，请 Obsidian 打开或分享选中文件。插件检测宿主是否提供可选的 `app.openWithDefaultApp` 方法，并传入库内相对路径；由 Obsidian 和系统处理文件访问及接收应用，移动端不调用 Node.js 或 Electron。无法直接打开时，可在系统“文件”应用或 Xmind 的“从文件打开”中选取该文件。
+
+移动端接收应用可能导入一份副本。SeeXmind 不会自动将外部修改复制回库，也无法保证外部编辑会改动库内原文件。请保存回相同位置或替换库内文件后刷新。
 
 Xmind、Obsidian、GitHub、网络盘或同步服务自身的网络行为另行管理；同步插件配置目录可能连同应用路径一起同步。插件“不主动联网”不等于外部应用或网络盘不联网，也不代表 Obsidian 对插件提供了安全沙箱。停用并删除插件目录可清除本地设置；反馈时请先移除敏感内容。
 
-## 打开外部程序的能力警告
+## 桌面端打开外部程序的能力警告
 
-插件目录可能显示 **“Shell 执行 / child_process”**。SeeXmind 使用 Node.js 程序启动接口，在 Mac 上打开 Xmind（包括指定的 `.app`），或在 Windows 上启动你指定的 `.exe`；Windows 未填写路径时使用系统默认打开方式。
+插件目录可能因桌面端打开功能显示 **“Shell 执行 / child_process”**。移动端打开不使用 Node.js 或 Electron。桌面端 SeeXmind 使用 Node.js 程序启动接口，在 Mac 上打开 Xmind（包括指定的 `.app`），或在 Windows 上启动你指定的 `.exe`；Windows 未填写路径时使用系统默认打开方式。
 
 - 只有你双击文件，或使用“用 Xmind 打开”按钮、命令、菜单时才会启动程序；启用插件、显示预览不会自动启动程序。
 - 插件会校验 `.xmind` 本地文件路径和自定义应用路径，使用独立参数传递，不拼接 shell 命令字符串，也不通过 shell 解释器执行。

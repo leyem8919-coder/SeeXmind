@@ -1,5 +1,13 @@
 # Changelog / 更新记录
 
+## 0.3.0 — 2026-10-05
+
+- Add iPhone, iPad and Android support for local `.xmind` previews, Markdown embeds and sheet selection.
+- Add one-finger panning and two-finger pinch zoom, at least 44 px touch buttons, and a canvas tap that reveals controls for 3.5 seconds even at 0% idle opacity.
+- Add mobile Open / share through Obsidian's available system file handoff. Choose Xmind in the system flow; imported copies may require saving back or replacing the vault file after editing.
+- Keep custom macOS `.app` and Windows `.exe` paths. Desktop-only Node.js/Electron capabilities load only when used; desktop double-click behavior is unchanged.
+- Update English and Simplified Chinese guides and privacy disclosures. Source, build configuration and tests remain private; existing screenshots show macOS.
+
 ## 0.2.3 — 2026-10-05
 
 - Restore custom macOS `.app` and Windows `.exe` paths and user-triggered process launching. Keep the 0.2.1 language, minimum-version, typing and deprecated API fixes.

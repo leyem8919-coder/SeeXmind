@@ -26,3 +26,16 @@
 .seexmind-native-host { position: absolute; inset: 0; }
 .seexmind-native-host:empty { pointer-events: none; }
 .seexmind-native-host svg { display: block; user-select: none; }
+
+/* Touch controls can still fade to 0%; tapping the canvas reveals them. */
+.seexmind-touch.seexmind-controls-visible .seexmind-floating { opacity: 1; }
+.seexmind-touch.seexmind-controls-zero:not(.seexmind-controls-visible) .seexmind-floating:not(:focus-within) { pointer-events: none; }
+.seexmind-touch .seexmind-tools { right: 8px; gap: 4px; padding: 4px; }
+.seexmind-touch .seexmind-tools .seexmind-icon-button { width: 44px; height: 44px; padding: 12px; }
+.seexmind-touch.seexmind-view .seexmind-open { min-height: 44px; height: auto; right: 8px; bottom: 8px; max-width: calc(100% - 16px); }
+.seexmind-touch .seexmind-status, .seexmind-touch .seexmind-footer { padding: 6px 10px; overflow-wrap: anywhere; }
+.seexmind-touch .seexmind-sheets { min-height: 44px; margin: 0 8px 4px; max-width: calc(100% - 16px); }
+.seexmind-embed:has(> .seexmind-touch) { resize: none; max-width: 100%; }
+.seexmind-touch .seexmind-canvas { min-height: 120px; }
+.seexmind-touch.seexmind-compact-controls .seexmind-tools { top: 8px; transform: none; flex-direction: row; gap: 2px; }
+.seexmind-touch.seexmind-compact-controls .seexmind-scale { display: none; }
