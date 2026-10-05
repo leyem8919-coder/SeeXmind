@@ -1,5 +1,14 @@
 # Changelog / 更新记录
 
+## 0.2.0 — 2026-10-05
+
+- Add independent Markdown embeds in Live Preview and Reading view, plus an `xmind` code-block fallback.
+- Add sheet selection and local structure rendering, while preserving embedded PNG mode for original appearance. Structure layouts are approximate; resource images and some advanced features are not reconstructed.
+- Follow Obsidian English/Simplified Chinese language for preview controls, settings, messages, and commands.
+- Reuse floating controls, idle opacity, and custom application paths in embedded previews.
+- Add bounded document parsing and attribution for adapted Apache-2.0 renderer components.
+- Split English README and Simplified Chinese documentation. No new promotional screenshots were uploaded.
+
 ## 0.1.4 — 2026-10-05
 
 - Move zoom, fit, and refresh to a vertical floating icon toolbar with hover labels.

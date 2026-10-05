@@ -1,40 +1,31 @@
-# SeeXmind 隐私说明
+# SeeXmind privacy / 隐私说明
 
-适用版本：0.1.3 · 更新日期：2026-10-05
+Applies to version 0.2.0. Updated 2026-10-05.
 
-## 插件如何处理文件
+## Local processing
 
-当你打开库中的 `.xmind` 文件时，SeeXmind 在本机读取该文件，从压缩包内取出 `Thumbnails/thumbnail.png`，并在 Obsidian 内存中的图片视图里显示。插件不将图片另存到远程服务，不修改导图内容，也不通过扫描整个磁盘寻找文件。
+SeeXmind reads the selected vault `.xmind` file through Obsidian's Vault API. It extracts the embedded PNG and, when available, parses bounded `content.json` or `content.xml` data to draw sheet structures locally in memory. It does not modify the source file, scan the entire disk, or upload previews. Structured rendering does not load remote links, fonts, or image resources. No Node.js filesystem module is used by the runtime plugin.
 
-预览通过 Obsidian Vault API 读取，使用纯内存解压，不导入 Node.js 文件系统模块。自定义应用路径仍需进程启动接口，但不使用 shell 命令字符串执行。
+The plugin listens for vault file changes to refresh active previews. Application paths and idle opacity are stored in `.obsidian/plugins/seexmind/data.json`. Each preview's temporary zoom, pan and sheet selection stay in memory.
 
-插件监听库中文件的变化，以便刷新当前预览。双击文件、使用打开按钮或相关命令时，插件将选中文件的本地路径交给操作系统或用户指定的 Xmind 程序。Xmind 因而可以读取并编辑该文件，这是用户主动发起的本地应用间交互。
+## Network and data collection
 
-## 网络、收集与共享
+SeeXmind does not initiate network requests, operate a backend, load remote scripts, upload documents, collect personal information, track usage, show ads, or send telemetry/crash reports. It requires no SeeXmind account, credentials, or API key. This statement describes the implementation, not a security sandbox or permission restriction imposed by Obsidian.
 
-SeeXmind 没有后台服务，不主动发起 HTTP/HTTPS 请求，不加载远程脚本、字体或图片，不上传笔记或导图。
+## Opening another application
 
-插件不收集或传送姓名、邮箱、账号、设备标识、文件内容、文件路径、使用统计或行为记录；不含广告、分析工具、遥测或自动崩溃上报。无需 SeeXmind 账号、登录凭据或 API 密钥。
+Only a user action (double-click, button, command, or file menu) opens the selected file externally. The plugin passes its local path to Xmind or the operating system file association. A custom application path uses process-launching APIs with argument arrays, not shell command strings. The chosen application receives access to that file and may edit it. The plugin does not access Xmind accounts or passwords.
 
-本说明描述的是插件当前实现的行为，不意味着 Obsidian 为插件提供了限制权限的安全沙箱。
+Xmind, Obsidian, GitHub, network storage and synchronization services have independent network behavior and privacy policies. Downloading/updating this plugin, opening a network-mounted file, or using Xmind's cloud features may involve network access outside SeeXmind. Synchronizing the plugin configuration folder may also synchronize saved application paths.
 
-## 本地设置与外部应用
+## Removal and feedback
 
-可选的 Mac 应用路径和 Windows 程序路径会保存在当前库 `.obsidian/plugins/seexmind/data.json` 中，用于记住用户选择的打开方式。插件不主动传送这个文件；如果用户启用同步该目录的服务，设置可能被该服务同步。
+Disable the plugin and remove its `seexmind` plugin folder to delete its local settings. There is no developer-operated remote user database. Before posting public issues, remove sensitive information from files, screenshots, and logs.
 
-启动本机 Xmind 需要调用库外已安装的应用程序。这是插件所需的桌面系统交互；插件不读取 Xmind 账号、密码或其他应用的私人数据。
+## 中文说明
 
-以下行为由相应产品独立管理：
+插件仅在本机内存中读取选中的库内文件，解析内置 PNG 或导图结构，不修改导图，不扫描整个磁盘，不主动联网，不加载远程资源，不上传文件，不采集个人信息、行为统计、遥测或崩溃报告。
 
-- 浏览器、GitHub 或 Obsidian 下载、检查、安装或更新插件时的网络访问；
-- Xmind 自身的账号、同步、更新及其他网络功能；
-- 网络共享文件夹、iCloud、Obsidian Sync 等对导图或配置文件的读取和传输；
-- 用户主动通过 GitHub Issues 反馈问题时提交的信息。
+应用路径及闲置不透明度保存在当前库的 `data.json`。缩放、平移和画布选择为临时内存状态。用户主动打开原文件时，插件将本地路径交给 Xmind 或系统默认应用；指定程序路径时使用参数数组启动程序，不执行拼接的 shell 命令字符串。
 
-因此，“SeeXmind 不联网”不代表启动 Xmind 后它也不联网，或操作系统读取网络盘文件时不发生网络通信。
-
-## 删除与反馈
-
-停用插件后，可删除 `.obsidian/plugins/seexmind` 清除插件及其本地设置。SeeXmind 不维护需要向开发者申请删除的远程用户数据库。
-
-反馈问题时，请先移除导图、截图和日志中的敏感内容。不要在公开 Issue 上传账号、密码、密钥或无权公开的文件。第三方平台处理反馈内容的方式以其隐私规则为准。
+Xmind、Obsidian、GitHub、网络盘或同步服务自身的网络行为另行管理；同步插件配置目录可能连同应用路径一起同步。插件“不主动联网”不等于外部应用或网络盘不联网，也不代表 Obsidian 对插件提供了安全沙箱。停用并删除插件目录可清除本地设置；反馈时请先移除敏感内容。

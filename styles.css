@@ -18,3 +18,11 @@
 .seexmind-view .seexmind-stage > img.seexmind-image { position: absolute; left: 50%; top: 50%; max-width: none; max-height: none; transform-origin: center; user-select: none; pointer-events: none; }
 .seexmind-image[hidden] { display: none; }
 .seexmind-footer { padding: 8px 16px; color: var(--text-muted); font-size: var(--font-ui-smaller); border-top: 1px solid var(--background-modifier-border); }
+.seexmind-view { display: flex; flex-direction: column; height: 100%; min-height: 0; overflow: hidden; }
+.seexmind-embed { display: block; height: 440px; min-height: 280px; resize: vertical; overflow: auto; border: 1px solid var(--background-modifier-border); border-radius: 8px; }
+.seexmind-embed > .seexmind-view { height: 100%; }
+.seexmind-sheets { align-self: flex-start; max-width: calc(100% - 24px); margin: 0 12px 8px; }
+.seexmind-sheets[hidden] { display: none; }
+.seexmind-native-host { position: absolute; inset: 0; }
+.seexmind-native-host:empty { pointer-events: none; }
+.seexmind-native-host svg { display: block; user-select: none; }

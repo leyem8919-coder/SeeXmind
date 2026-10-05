@@ -1,6 +1,6 @@
 # Third-party notices
 
-SeeXmind bundles the following runtime dependency. Xmind and Obsidian applications are not included.
+SeeXmind bundles the following runtime components. Xmind and Obsidian applications are not included.
 
 ## fflate 0.8.3
 
@@ -25,3 +25,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## XMind Maps renderer
+
+Selected document, layout, SVG rendering, and translation modules adapted from https://github.com/yuanzhixiang/obsidian-xmind (Copyright 2026 yuanzhixiang), Apache-2.0. Upstream identifies itself as a fork of Ssentiago/obsidian-xmind-viewer. See VENDOR.md in the source repository for adaptation details. Full Apache-2.0 terms are retained in this distribution.
+
+Adapted from upstream revision 0d780ca2cc2773cf701a2d7a68ec6cb580bcdce2. Modifications include bounded archive parsing, document complexity validation, disabled external links/resources, and integration with SeeXmind's independent embedded previews. The original embedded PNG mode is retained separately.
