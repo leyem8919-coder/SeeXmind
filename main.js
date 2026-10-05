@@ -239,11 +239,9 @@ Selected document, layout, SVG rendering, and translation modules adapted from h
 Adapted from upstream revision 0d780ca2cc2773cf701a2d7a68ec6cb580bcdce2. Modifications include bounded archive parsing, document complexity validation, disabled external links/resources, and integration with SeeXmind's independent embedded previews. The original embedded PNG mode is retained separately.
 */
 "use strict";
-var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -257,14 +255,6 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
@@ -274,7 +264,7 @@ __export(main_exports, {
   default: () => SeeXmind2
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian2 = require("obsidian");
+var import_obsidian3 = require("obsidian");
 var import_child_process = require("child_process");
 var import_electron = require("electron");
 
@@ -811,7 +801,7 @@ function normalizeOpacity(value) {
 }
 
 // src/i18n.ts
-var obsidian = __toESM(require("obsidian"));
+var import_obsidian = require("obsidian");
 
 // src/translations.ts
 function normalizeLocale(language) {
@@ -869,12 +859,11 @@ function translate(message, language) {
 
 // src/i18n.ts
 function locale() {
-  let language = "";
   try {
-    language = typeof obsidian.getLanguage === "function" ? obsidian.getLanguage() : window.localStorage.getItem("language") || document.documentElement.lang;
+    return normalizeLocale((0, import_obsidian.getLanguage)());
   } catch {
+    return "en";
   }
-  return normalizeLocale(language);
 }
 function t(message) {
   return translate(message, locale());
@@ -952,7 +941,7 @@ function normalizeInvisibleCentralTopicTextColor(content) {
 
 // src/vendor/xmind/xmind-zip.ts
 function readZipEntries(file) {
-  const resources = /* @__PURE__ */ Object.create(null);
+  const resources = {};
   for (const name of ["content.json", "content.xml"]) {
     try {
       resources[name] = readZipFile(file, name, 8 * 1024 * 1024);
@@ -4220,7 +4209,7 @@ function renderNativeMindMap(container, sheet, options = {}) {
 }
 
 // src/embeds.ts
-var import_obsidian = require("obsidian");
+var import_obsidian2 = require("obsidian");
 function embedLink(raw) {
   const path = raw.trim().replace(/^!\[\[|\]\]$/g, "").split(/[|#]/)[0];
   return /\.xmind$/i.test(path) ? path : null;
@@ -4250,11 +4239,11 @@ function registerEmbeds(plugin) {
     if (!link) return;
     const file = plugin.app.metadataCache.getFirstLinkpathDest(link, source);
     host.empty();
-    if (!(file instanceof import_obsidian.TFile) || file.extension.toLowerCase() !== "xmind") {
+    if (!(file instanceof import_obsidian2.TFile) || file.extension.toLowerCase() !== "xmind") {
       host.setText(t("\u627E\u4E0D\u5230 Xmind \u6587\u4EF6\uFF1A") + link);
       return;
     }
-    const owner = new import_obsidian.MarkdownRenderChild(host);
+    const owner = new import_obsidian2.MarkdownRenderChild(host);
     owner.addChild(make(host, file));
     active.add(owner);
     owner.register(() => active.delete(owner));
@@ -4275,8 +4264,8 @@ function registerEmbeds(plugin) {
 // src/main.ts
 var VIEW_TYPE = "seexmind-preview";
 var DEFAULTS = { macApp: "", windowsApp: "", idleOpacity: 35 };
-var isXmind = (file) => file instanceof import_obsidian2.TFile && file.extension.toLowerCase() === "xmind";
-var SeeXmind2 = class extends import_obsidian2.Plugin {
+var isXmind = (file) => file instanceof import_obsidian3.TFile && file.extension.toLowerCase() === "xmind";
+var SeeXmind2 = class extends import_obsidian3.Plugin {
   constructor() {
     super(...arguments);
     this.settings = { ...DEFAULTS };
@@ -4296,7 +4285,7 @@ var SeeXmind2 = class extends import_obsidian2.Plugin {
     try {
       this.registerExtensions(["xmind"], VIEW_TYPE);
     } catch (error) {
-      new import_obsidian2.Notice(t("SeeXmind\uFF1A\u53E6\u4E00\u4E2A\u63D2\u4EF6\u5DF2\u63A5\u7BA1 .xmind\u3002\u8BF7\u505C\u7528\u8BE5\u63D2\u4EF6\u540E\u91CD\u65B0\u542F\u7528 SeeXmind\u3002"), 1e4);
+      new import_obsidian3.Notice(t("SeeXmind\uFF1A\u53E6\u4E00\u4E2A\u63D2\u4EF6\u5DF2\u63A5\u7BA1 .xmind\u3002\u8BF7\u505C\u7528\u8BE5\u63D2\u4EF6\u540E\u91CD\u65B0\u542F\u7528 SeeXmind\u3002"), 1e4);
       throw error;
     }
     registerEmbeds(this);
@@ -4348,7 +4337,7 @@ var SeeXmind2 = class extends import_obsidian2.Plugin {
     this.opening.add(file.path);
     try {
       const adapter = this.app.vault.adapter;
-      if (!(adapter instanceof import_obsidian2.FileSystemAdapter)) throw new Error(t("\u9700\u8981\u684C\u9762\u4E0A\u7684\u672C\u5730\u6587\u4EF6\u5E93\u3002"));
+      if (!(adapter instanceof import_obsidian3.FileSystemAdapter)) throw new Error(t("\u9700\u8981\u684C\u9762\u4E0A\u7684\u672C\u5730\u6587\u4EF6\u5E93\u3002"));
       const customApp = process.platform === "darwin" ? this.settings.macApp : this.settings.windowsApp;
       const plan = planOpen(process.platform, adapter.getFullPath(file.path), customApp);
       if (plan.kind === "default") {
@@ -4373,13 +4362,13 @@ var SeeXmind2 = class extends import_obsidian2.Plugin {
         });
       }
     } catch (e) {
-      new import_obsidian2.Notice(e instanceof Error ? t(e.message) : t("\u65E0\u6CD5\u6253\u5F00 Xmind\u3002"), 9e3);
+      new import_obsidian3.Notice(e instanceof Error ? t(e.message) : t("\u65E0\u6CD5\u6253\u5F00 Xmind\u3002"), 9e3);
     } finally {
       this.opening.delete(file.path);
     }
   }
 };
-var XmindView = class extends import_obsidian2.FileView {
+var XmindView = class extends import_obsidian3.FileView {
   constructor(leaf, plugin) {
     super(leaf);
     this.plugin = plugin;
@@ -4406,7 +4395,7 @@ var XmindView = class extends import_obsidian2.FileView {
     this.preview?.reset();
   }
 };
-var XmindPreview = class extends import_obsidian2.Component {
+var XmindPreview = class extends import_obsidian3.Component {
   constructor(contentEl, plugin, initialFile) {
     super();
     this.contentEl = contentEl;
@@ -4457,7 +4446,7 @@ var XmindPreview = class extends import_obsidian2.Component {
     const toolbar = canvas.createDiv({ cls: "seexmind-tools seexmind-floating", attr: { role: "group", "aria-label": t("\u9884\u89C8\u5DE5\u5177") } });
     const iconButton = (icon, label, action) => {
       const b = toolbar.createEl("button", { cls: "seexmind-icon-button", attr: { type: "button", "aria-label": label, "data-tooltip-position": "left" } });
-      (0, import_obsidian2.setIcon)(b, icon);
+      (0, import_obsidian3.setIcon)(b, icon);
       this.registerDomEvent(b, "click", action);
       return b;
     };
@@ -4470,7 +4459,7 @@ var XmindPreview = class extends import_obsidian2.Component {
     this.scaleLabel = toolbar.createSpan({ cls: "seexmind-scale", text: "100%" });
     const open = canvas.createEl("button", { cls: "seexmind-open seexmind-floating mod-cta", attr: { type: "button", "aria-label": t("\u7528 Xmind \u7F16\u8F91\u539F\u6587\u4EF6"), "data-tooltip-position": "top" } });
     open.createSpan({ text: t("\u7528 Xmind \u6253\u5F00") });
-    (0, import_obsidian2.setIcon)(open.createSpan({ cls: "seexmind-open-icon" }), "external-link");
+    (0, import_obsidian3.setIcon)(open.createSpan({ cls: "seexmind-open-icon" }), "external-link");
     this.registerDomEvent(open, "click", () => {
       if (this.file) void this.plugin.openInXmind(this.file);
     });
@@ -4652,7 +4641,7 @@ var XmindPreview = class extends import_obsidian2.Component {
     this.documentModel = null;
   }
 };
-var XmindSettings = class extends import_obsidian2.PluginSettingTab {
+var XmindSettings = class extends import_obsidian3.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
@@ -4692,15 +4681,15 @@ var XmindSettings = class extends import_obsidian2.PluginSettingTab {
   // Compatibility rendering for Obsidian versions before the declarative settings API.
   display() {
     this.containerEl.empty();
-    new import_obsidian2.Setting(this.containerEl).setName(t("\u60AC\u6D6E\u6309\u94AE\u95F2\u7F6E\u4E0D\u900F\u660E\u5EA6")).setDesc(t("0% \u5B8C\u5168\u9690\u85CF\uFF0C100% \u59CB\u7EC8\u663E\u793A\uFF1B\u60AC\u505C\u6216\u952E\u76D8\u805A\u7126\u65F6\u6062\u590D\u663E\u793A\u3002\u7ACB\u5373\u751F\u6548\u3002")).addSlider((slider) => slider.setLimits(0, 100, 1).setValue(this.plugin.settings.idleOpacity).setDynamicTooltip().onChange((value) => {
+    new import_obsidian3.Setting(this.containerEl).setName(t("\u60AC\u6D6E\u6309\u94AE\u95F2\u7F6E\u4E0D\u900F\u660E\u5EA6")).setDesc(t("0% \u5B8C\u5168\u9690\u85CF\uFF0C100% \u59CB\u7EC8\u663E\u793A\uFF1B\u60AC\u505C\u6216\u952E\u76D8\u805A\u7126\u65F6\u6062\u590D\u663E\u793A\u3002\u7ACB\u5373\u751F\u6548\u3002")).addSlider((slider) => slider.setLimits(0, 100, 1).setValue(this.plugin.settings.idleOpacity).onChange((value) => {
       void this.plugin.setIdleOpacity(value);
     }));
     this.containerEl.createEl("p", { text: t("\u9884\u89C8\u5B8C\u5168\u5728\u672C\u5730\u5B8C\u6210\u3002\u5355\u51FB\u6587\u4EF6\u67E5\u770B\u9884\u89C8\uFF0C\u53CC\u51FB\u7528 Xmind \u6253\u5F00\u3002") });
-    new import_obsidian2.Setting(this.containerEl).setName(t("Mac\uFF1AXmind \u5E94\u7528\u8DEF\u5F84\uFF08\u53EF\u9009\uFF09")).setDesc(t("\u901A\u5E38\u7559\u7A7A\u5373\u53EF\u3002\u591A\u4E2A\u7248\u672C\u5171\u5B58\u65F6\u53EF\u6307\u5B9A .app \u8DEF\u5F84\u3002")).addText((text) => text.setPlaceholder("/Applications/Xmind.app").setValue(this.plugin.settings.macApp).onChange(async (value) => {
+    new import_obsidian3.Setting(this.containerEl).setName(t("Mac\uFF1AXmind \u5E94\u7528\u8DEF\u5F84\uFF08\u53EF\u9009\uFF09")).setDesc(t("\u901A\u5E38\u7559\u7A7A\u5373\u53EF\u3002\u591A\u4E2A\u7248\u672C\u5171\u5B58\u65F6\u53EF\u6307\u5B9A .app \u8DEF\u5F84\u3002")).addText((text) => text.setPlaceholder("/Applications/Xmind.app").setValue(this.plugin.settings.macApp).onChange(async (value) => {
       this.plugin.settings.macApp = value;
       await this.plugin.saveData(this.plugin.settings);
     }));
-    new import_obsidian2.Setting(this.containerEl).setName(t("Windows\uFF1AXmind.exe \u8DEF\u5F84\uFF08\u53EF\u9009\uFF09")).setDesc(t("\u7559\u7A7A\u65F6\u4F7F\u7528 .xmind \u7684\u7CFB\u7EDF\u9ED8\u8BA4\u5E94\u7528\uFF0C\u8BF7\u786E\u4FDD\u5B83\u662F Xmind\u3002\u4E5F\u53EF\u6307\u5B9A\u5B8C\u6574 .exe \u8DEF\u5F84\uFF1B\u4E0D\u8981\u6DFB\u52A0\u5F15\u53F7\u6216\u53C2\u6570\u3002")).addText((text) => text.setPlaceholder("C:\\\u2026\\Xmind.exe").setValue(this.plugin.settings.windowsApp).onChange(async (value) => {
+    new import_obsidian3.Setting(this.containerEl).setName(t("Windows\uFF1AXmind.exe \u8DEF\u5F84\uFF08\u53EF\u9009\uFF09")).setDesc(t("\u7559\u7A7A\u65F6\u4F7F\u7528 .xmind \u7684\u7CFB\u7EDF\u9ED8\u8BA4\u5E94\u7528\uFF0C\u8BF7\u786E\u4FDD\u5B83\u662F Xmind\u3002\u4E5F\u53EF\u6307\u5B9A\u5B8C\u6574 .exe \u8DEF\u5F84\uFF1B\u4E0D\u8981\u6DFB\u52A0\u5F15\u53F7\u6216\u53C2\u6570\u3002")).addText((text) => text.setPlaceholder("C:\\\u2026\\Xmind.exe").setValue(this.plugin.settings.windowsApp).onChange(async (value) => {
       this.plugin.settings.windowsApp = value;
       await this.plugin.saveData(this.plugin.settings);
     }));

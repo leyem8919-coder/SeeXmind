@@ -35,7 +35,7 @@ SeeXmind 是独立的非官方插件，与 Xmind、Obsidian 无隶属、赞助�
 
 ## 安装
 
-需要桌面版 Obsidian 1.5.0 或以上，支持 macOS 和 Windows，不支持手机和平板。建议另外安装 [Xmind](https://xmind.app/) 以便编辑。预览受支持的文件不需要 Xmind 账号，也不需要让 Xmind 一直运行。
+需要桌面版 Obsidian 1.8.7 或以上，支持 macOS 和 Windows，不支持手机和平板。建议另外安装 [Xmind](https://xmind.app/) 以便编辑。预览受支持的文件不需要 Xmind 账号，也不需要让 Xmind 一直运行。
 
 如果社区插件目录已能搜索到 **SeeXmind**，可以直接安装并启用；尚未显示时可以手动安装：
 
@@ -102,3 +102,11 @@ public 库提供说明和安装文件；完整开发源码、构建配置和测�
 项目采用 [Apache-2.0](LICENSE)。部分结构解析及渲染代码改编自 [yuanzhixiang/obsidian-xmind](https://github.com/yuanzhixiang/obsidian-xmind)，已在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 保留署名和修改说明，不包含 Xmind 专有引擎。
 
 软件按现状提供，具体保证与责任限制以许可证及适用法律为准。范围说明不排除法律不允许排除的责任，也不是不侵权或“零法律风险”的保证。
+
+## 请喝杯咖啡 · 感谢支持
+
+感谢你使用 SeeXmind，也感谢每一位提出建议、反馈问题和参与测试的朋友！如果这个小插件让你的学习或工作方便了一点，欢迎通过下方二维码请作者喝杯咖啡。你的鼓励是继续维护和改进的动力。
+
+**打赏完全自愿，不打赏也可以安装并使用全部现有功能，打赏不会解锁额外功能。** 二维码仅展示在 GitHub 说明页；插件内没有付款提示，也不处理付款。无论是否打赏，都真诚感谢你的使用与支持！
+
+<img src="docs/images/support.png" alt="自愿打赏二维码，感谢支持" width="390">

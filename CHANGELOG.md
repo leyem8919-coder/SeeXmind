@@ -1,5 +1,13 @@
 # Changelog / 更新记录
 
+## 0.2.1 — 2026-10-05
+
+- Correct the minimum Obsidian version to 1.8.7, matching the language API used by the plugin.
+- Use the official language API and remove unused legacy locale detection.
+- Resolve review findings for an unsafe assignment, a deprecated slider helper, and an unused resource helper.
+- Add a voluntary support QR code and thanks to the public GitHub documentation only.
+- Correct release documentation: Windows testing was confirmed by the maintainer on 2026-10-05.
+
 ## 0.2.0 — 2026-10-05
 
 - Add independent Markdown embeds in Live Preview and Reading view, plus an `xmind` code-block fallback.

@@ -35,7 +35,7 @@ Screenshots supplied by the maintainer, showing the macOS interface in Simplifie
 
 ## Installation
 
-Requires desktop Obsidian 1.5.0 or later. macOS and Windows are supported; mobile is not supported. We recommend installing [Xmind](https://xmind.app/) separately for editing. Previewing supported files does not require an Xmind account or a running Xmind app.
+Requires desktop Obsidian 1.8.7 or later. macOS and Windows are supported; mobile is not supported. We recommend installing [Xmind](https://xmind.app/) separately for editing. Previewing supported files does not require an Xmind account or a running Xmind app.
 
 If SeeXmind is available in **Settings → Community plugins → Browse**, search for **SeeXmind**, install it, and enable it. If it is not listed, use manual installation:
 
@@ -102,3 +102,11 @@ This public repository contains user documentation and installable distribution 
 Licensed under [Apache-2.0](LICENSE). Selected structure parsing and rendering components are adapted from [yuanzhixiang/obsidian-xmind](https://github.com/yuanzhixiang/obsidian-xmind), with attribution and modification details in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). No Xmind proprietary engine is included.
 
 Provided as-is, subject to the license and applicable law. These scope statements do not exclude liabilities that cannot lawfully be excluded or guarantee freedom from infringement or legal risk.
+
+## Support and thanks
+
+Thank you for using SeeXmind, sharing feedback, and helping test it! If it makes your workflow a little easier, you are welcome to buy the maintainer a coffee using the QR code below. Your encouragement helps support continued maintenance.
+
+**Support is completely voluntary. No payment is required to install or use any current feature, and donating does not unlock extra features.** The QR code is provided here on GitHub only; the plugin does not display payment prompts or process payments.
+
+<img src="docs/images/support.png" alt="QR code for voluntary support — thank you!" width="390">

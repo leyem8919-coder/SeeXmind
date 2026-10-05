@@ -1,8 +1,8 @@
 {
   "id": "seexmind",
   "name": "SeeXmind",
-  "version": "0.2.0",
-  "minAppVersion": "1.5.0",
+  "version": "0.2.1",
+  "minAppVersion": "1.8.7",
   "description": "Preview and embed local Xmind files, switch sheets, and open originals in Xmind.",
   "author": "leyem8919-coder",
   "authorUrl": "https://github.com/leyem8919-coder",
