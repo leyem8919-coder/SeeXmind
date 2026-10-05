@@ -265,7 +265,6 @@ __export(main_exports, {
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian3 = require("obsidian");
-var import_child_process = require("child_process");
 var import_electron = require("electron");
 
 // node_modules/fflate/esm/browser.js
@@ -779,20 +778,11 @@ async function extractPreview(input) {
 
 // src/opener.ts
 var import_path = require("path");
-function planOpen(platform, file, customApp = "") {
+function planOpen(platform, file) {
+  if (platform !== "darwin" && platform !== "win32") throw new Error("\u76EE\u524D\u652F\u6301 macOS \u548C Windows\u3002");
   const p = platform === "win32" ? import_path.win32 : import_path.posix;
   if (!p.isAbsolute(file) || p.extname(file).toLowerCase() !== ".xmind" || file.includes("\0")) throw new Error("\u8BF7\u9009\u62E9\u672C\u5730 .xmind \u6587\u4EF6\u3002");
-  const app = customApp.trim();
-  if (platform === "darwin") {
-    if (app && (!p.isAbsolute(app) || !app.toLowerCase().endsWith(".app") || app.includes("\0"))) throw new Error("\u8BF7\u586B\u5199 Xmind \u5E94\u7528\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
-    return { kind: "exec", executable: "/usr/bin/open", args: ["-a", app || "Xmind", file] };
-  }
-  if (platform === "win32") {
-    if (!app) return { kind: "default", path: file };
-    if (!p.isAbsolute(app) || p.extname(app).toLowerCase() !== ".exe" || app.includes("\0")) throw new Error("\u8BF7\u586B\u5199 Xmind.exe \u7684\u5B8C\u6574\u8DEF\u5F84\u3002");
-    return { kind: "exec", executable: app, args: [file] };
-  }
-  throw new Error("\u76EE\u524D\u652F\u6301 macOS \u548C Windows\u3002");
+  return { kind: "default", path: file };
 }
 
 // src/settings.ts
@@ -808,9 +798,9 @@ function normalizeLocale(language) {
   return /^zh(?:$|[-_]cn|[-_]hans)/i.test(language) ? "zh-CN" : "en";
 }
 var english = {
+  "\u65E0\u6CD5\u6253\u5F00\u3002\u8BF7\u5B89\u88C5 Xmind\uFF0C\u5E76\u8BBE\u4E3A .xmind \u7684\u7CFB\u7EDF\u9ED8\u8BA4\u5E94\u7528\u3002": "Cannot open this file. Install Xmind and set it as the system default for .xmind files.",
+  "\u8BF7\u5728\u7CFB\u7EDF\u4E2D\u5C06 .xmind \u7684\u9ED8\u8BA4\u6253\u5F00\u65B9\u5F0F\u8BBE\u4E3A Xmind\uFF1B\u63D2\u4EF6\u4E0D\u518D\u6307\u5B9A\u7A0B\u5E8F\u8DEF\u5F84\u3002": "Set Xmind as the system default for .xmind files. This plugin no longer selects an application path.",
   "\u8BF7\u9009\u62E9\u672C\u5730 .xmind \u6587\u4EF6\u3002": "Select a local .xmind file.",
-  "\u8BF7\u586B\u5199 Xmind \u5E94\u7528\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002": "Enter an absolute Xmind .app path.",
-  "\u8BF7\u586B\u5199 Xmind.exe \u7684\u5B8C\u6574\u8DEF\u5F84\u3002": "Enter an absolute Xmind.exe path.",
   "\u76EE\u524D\u652F\u6301 macOS \u548C Windows\u3002": "macOS and Windows are supported.",
   "Xmind \u9884\u89C8": "Xmind preview",
   "\u9009\u62E9\u753B\u5E03": "Select sheet",
@@ -833,25 +823,15 @@ var english = {
   "\u5728 Xmind \u4E2D\u6253\u5F00\u5F53\u524D\u6587\u4EF6": "Open current file in Xmind",
   "\u5728 Xmind \u4E2D\u6253\u5F00": "Open in Xmind",
   "\u9700\u8981\u684C\u9762\u4E0A\u7684\u672C\u5730\u6587\u4EF6\u5E93\u3002": "A local desktop vault is required.",
-  "\u65E0\u6CD5\u6253\u5F00\u3002\u8BF7\u5B89\u88C5 Xmind\uFF0C\u5E76\u8BBE\u4E3A .xmind \u7684\u9ED8\u8BA4\u5E94\u7528\uFF0C\u6216\u5728 SeeXmind \u8BBE\u7F6E\u4E2D\u6307\u5B9A Xmind.exe\u3002": "Install Xmind and associate .xmind files with it, or set its executable path in settings.",
-  "\u65E0\u6CD5\u542F\u52A8 Xmind\u3002\u8BF7\u68C0\u67E5\u5B89\u88C5\u60C5\u51B5\u6216 SeeXmind \u4E2D\u7684\u5E94\u7528\u8DEF\u5F84\u3002": "Cannot launch Xmind. Check the installation or custom application path.",
   "\u65E0\u6CD5\u6253\u5F00 Xmind\u3002": "Cannot open Xmind.",
   "Xmind \u56FE\u7247\u9884\u89C8\uFF1B\u6EDA\u8F6E\u7F29\u653E\uFF0C\u62D6\u52A8\u5E73\u79FB\uFF0C\u6309 0 \u9002\u5E94\u7A97\u53E3": "Xmind preview: scroll to zoom, drag to pan, press 0 to fit",
   "Xmind \u5185\u7F6E\u9884\u89C8": "Embedded Xmind preview",
   "\u6EDA\u8F6E\u7F29\u653E / \u62D6\u52A8\u5E73\u79FB \xB7 \u7F16\u8F91\u540E\u5728 Xmind \u4FDD\u5B58\u5373\u53EF\u5237\u65B0": "Scroll to zoom / drag to pan \xB7 Save in Xmind before refreshing",
   "\u6587\u4EF6\u8D85\u8FC7 128 MB\uFF0C\u8BF7\u7528 Xmind \u6253\u5F00\u3002": "File exceeds 128 MB. Please open it in Xmind.",
-  "Mac: Xmind \u5E94\u7528\u8DEF\u5F84": "Mac: Xmind application path",
-  "Windows: Xmind.exe \u8DEF\u5F84": "Windows: Xmind executable path",
-  "\u53EF\u9009\uFF1AXmind .app \u7684\u5B8C\u6574\u8DEF\u5F84\uFF1B\u7559\u7A7A\u4F7F\u7528\u672C\u673A Xmind\u3002": "Optional absolute .app path; leave empty to use the installed Xmind.",
-  "\u53EF\u9009\uFF1A\u5B8C\u6574 .exe \u8DEF\u5F84\uFF0C\u4E0D\u52A0\u5F15\u53F7\u6216\u53C2\u6570\uFF1B\u7559\u7A7A\u4F7F\u7528\u7CFB\u7EDF\u6587\u4EF6\u5173\u8054\u3002": "Optional absolute .exe path, without quotes or arguments; leave empty to use file association.",
   "\u60AC\u6D6E\u6309\u94AE\u95F2\u7F6E\u4E0D\u900F\u660E\u5EA6": "Floating controls idle opacity",
   "0% \u5B8C\u5168\u9690\u85CF\uFF0C100% \u59CB\u7EC8\u663E\u793A\uFF1B\u9F20\u6807\u79FB\u5230\u6309\u94AE\u533A\u57DF\u6216\u952E\u76D8\u805A\u7126\u65F6\u6062\u590D\u663E\u793A\u3002\u7ACB\u5373\u751F\u6548\u3002": "0% hides controls; 100% keeps them visible. Hover or keyboard focus reveals them. Applies immediately.",
   "0% \u5B8C\u5168\u9690\u85CF\uFF0C100% \u59CB\u7EC8\u663E\u793A\uFF1B\u60AC\u505C\u6216\u952E\u76D8\u805A\u7126\u65F6\u6062\u590D\u663E\u793A\u3002\u7ACB\u5373\u751F\u6548\u3002": "0% hides controls; 100% keeps them visible. Hover or keyboard focus reveals them. Applies immediately.",
-  "\u9884\u89C8\u5B8C\u5168\u5728\u672C\u5730\u5B8C\u6210\u3002\u5355\u51FB\u6587\u4EF6\u67E5\u770B\u9884\u89C8\uFF0C\u53CC\u51FB\u7528 Xmind \u6253\u5F00\u3002": "Previews are processed locally. Single-click to preview; double-click to open Xmind.",
-  "Mac\uFF1AXmind \u5E94\u7528\u8DEF\u5F84\uFF08\u53EF\u9009\uFF09": "Mac: Xmind application path (optional)",
-  "\u901A\u5E38\u7559\u7A7A\u5373\u53EF\u3002\u591A\u4E2A\u7248\u672C\u5171\u5B58\u65F6\u53EF\u6307\u5B9A .app \u8DEF\u5F84\u3002": "Usually leave empty. Specify a .app path to choose among installed versions.",
-  "Windows\uFF1AXmind.exe \u8DEF\u5F84\uFF08\u53EF\u9009\uFF09": "Windows: Xmind executable path (optional)",
-  "\u7559\u7A7A\u65F6\u4F7F\u7528 .xmind \u7684\u7CFB\u7EDF\u9ED8\u8BA4\u5E94\u7528\uFF0C\u8BF7\u786E\u4FDD\u5B83\u662F Xmind\u3002\u4E5F\u53EF\u6307\u5B9A\u5B8C\u6574 .exe \u8DEF\u5F84\uFF1B\u4E0D\u8981\u6DFB\u52A0\u5F15\u53F7\u6216\u53C2\u6570\u3002": "Leave empty to use file association. Make Xmind the default app, or specify an absolute .exe path without quotes or arguments."
+  "\u9884\u89C8\u5B8C\u5168\u5728\u672C\u5730\u5B8C\u6210\u3002\u5355\u51FB\u6587\u4EF6\u67E5\u770B\u9884\u89C8\uFF0C\u53CC\u51FB\u7528 Xmind \u6253\u5F00\u3002": "Previews are processed locally. Single-click to preview; double-click to open Xmind."
 };
 function translate(message, language) {
   return normalizeLocale(language) === "zh-CN" ? message : english[message] || message;
@@ -4263,7 +4243,7 @@ function registerEmbeds(plugin) {
 
 // src/main.ts
 var VIEW_TYPE = "seexmind-preview";
-var DEFAULTS = { macApp: "", windowsApp: "", idleOpacity: 35 };
+var DEFAULTS = { idleOpacity: 35 };
 var isXmind = (file) => file instanceof import_obsidian3.TFile && file.extension.toLowerCase() === "xmind";
 var SeeXmind2 = class extends import_obsidian3.Plugin {
   constructor() {
@@ -4276,8 +4256,6 @@ var SeeXmind2 = class extends import_obsidian3.Plugin {
     const stored = await this.loadData();
     if (stored && typeof stored === "object") {
       this.settings = {
-        macApp: "macApp" in stored && typeof stored.macApp === "string" ? stored.macApp : "",
-        windowsApp: "windowsApp" in stored && typeof stored.windowsApp === "string" ? stored.windowsApp : "",
         idleOpacity: normalizeOpacity("idleOpacity" in stored ? stored.idleOpacity : void 0)
       };
     }
@@ -4338,29 +4316,9 @@ var SeeXmind2 = class extends import_obsidian3.Plugin {
     try {
       const adapter = this.app.vault.adapter;
       if (!(adapter instanceof import_obsidian3.FileSystemAdapter)) throw new Error(t("\u9700\u8981\u684C\u9762\u4E0A\u7684\u672C\u5730\u6587\u4EF6\u5E93\u3002"));
-      const customApp = process.platform === "darwin" ? this.settings.macApp : this.settings.windowsApp;
-      const plan = planOpen(process.platform, adapter.getFullPath(file.path), customApp);
-      if (plan.kind === "default") {
-        const error = await import_electron.shell.openPath(plan.path);
-        if (error) throw new Error(t("\u65E0\u6CD5\u6253\u5F00\u3002\u8BF7\u5B89\u88C5 Xmind\uFF0C\u5E76\u8BBE\u4E3A .xmind \u7684\u9ED8\u8BA4\u5E94\u7528\uFF0C\u6216\u5728 SeeXmind \u8BBE\u7F6E\u4E2D\u6307\u5B9A Xmind.exe\u3002"));
-      } else {
-        await new Promise((resolve, reject) => {
-          const failed = () => reject(new Error(t("\u65E0\u6CD5\u542F\u52A8 Xmind\u3002\u8BF7\u68C0\u67E5\u5B89\u88C5\u60C5\u51B5\u6216 SeeXmind \u4E2D\u7684\u5E94\u7528\u8DEF\u5F84\u3002")));
-          if (process.platform === "win32") {
-            const child = (0, import_child_process.spawn)(plan.executable, plan.args, { detached: true, stdio: "ignore", shell: false });
-            child.once("error", failed);
-            child.once("spawn", () => {
-              child.unref();
-              resolve();
-            });
-            return;
-          }
-          (0, import_child_process.execFile)(plan.executable, plan.args, (error) => {
-            if (error) failed();
-            else resolve();
-          });
-        });
-      }
+      const plan = planOpen(process.platform, adapter.getFullPath(file.path));
+      const error = await import_electron.shell.openPath(plan.path);
+      if (error) throw new Error(t("\u65E0\u6CD5\u6253\u5F00\u3002\u8BF7\u5B89\u88C5 Xmind\uFF0C\u5E76\u8BBE\u4E3A .xmind \u7684\u7CFB\u7EDF\u9ED8\u8BA4\u5E94\u7528\u3002"));
     } catch (e) {
       new import_obsidian3.Notice(e instanceof Error ? t(e.message) : t("\u65E0\u6CD5\u6253\u5F00 Xmind\u3002"), 9e3);
     } finally {
@@ -4649,16 +4607,6 @@ var XmindSettings = class extends import_obsidian3.PluginSettingTab {
   getSettingDefinitions() {
     return [
       {
-        name: t("Mac: Xmind \u5E94\u7528\u8DEF\u5F84"),
-        desc: t("\u53EF\u9009\uFF1AXmind .app \u7684\u5B8C\u6574\u8DEF\u5F84\uFF1B\u7559\u7A7A\u4F7F\u7528\u672C\u673A Xmind\u3002"),
-        control: { type: "text", key: "macApp", defaultValue: "", placeholder: "/Applications/Xmind.app" }
-      },
-      {
-        name: t("Windows: Xmind.exe \u8DEF\u5F84"),
-        desc: t("\u53EF\u9009\uFF1A\u5B8C\u6574 .exe \u8DEF\u5F84\uFF0C\u4E0D\u52A0\u5F15\u53F7\u6216\u53C2\u6570\uFF1B\u7559\u7A7A\u4F7F\u7528\u7CFB\u7EDF\u6587\u4EF6\u5173\u8054\u3002"),
-        control: { type: "text", key: "windowsApp", defaultValue: "", placeholder: "C:\\\u2026\\Xmind.exe" }
-      },
-      {
         name: t("\u60AC\u6D6E\u6309\u94AE\u95F2\u7F6E\u4E0D\u900F\u660E\u5EA6"),
         desc: t("0% \u5B8C\u5168\u9690\u85CF\uFF0C100% \u59CB\u7EC8\u663E\u793A\uFF1B\u9F20\u6807\u79FB\u5230\u6309\u94AE\u533A\u57DF\u6216\u952E\u76D8\u805A\u7126\u65F6\u6062\u590D\u663E\u793A\u3002\u7ACB\u5373\u751F\u6548\u3002"),
         control: { type: "slider", key: "idleOpacity", defaultValue: 35, min: 0, max: 100, step: 1, displayFormat: (value) => `${value}%` }
@@ -4666,16 +4614,12 @@ var XmindSettings = class extends import_obsidian3.PluginSettingTab {
     ];
   }
   getControlValue(key) {
-    return key === "macApp" || key === "windowsApp" || key === "idleOpacity" ? this.plugin.settings[key] : void 0;
+    return key === "idleOpacity" ? this.plugin.settings[key] : void 0;
   }
   async setControlValue(key, value) {
     if (key === "idleOpacity") {
       await this.plugin.setIdleOpacity(value);
       return;
-    }
-    if ((key === "macApp" || key === "windowsApp") && typeof value === "string") {
-      this.plugin.settings[key] = value;
-      await this.plugin.saveData(this.plugin.settings);
     }
   }
   // Compatibility rendering for Obsidian versions before the declarative settings API.
@@ -4685,14 +4629,7 @@ var XmindSettings = class extends import_obsidian3.PluginSettingTab {
       void this.plugin.setIdleOpacity(value);
     }));
     this.containerEl.createEl("p", { text: t("\u9884\u89C8\u5B8C\u5168\u5728\u672C\u5730\u5B8C\u6210\u3002\u5355\u51FB\u6587\u4EF6\u67E5\u770B\u9884\u89C8\uFF0C\u53CC\u51FB\u7528 Xmind \u6253\u5F00\u3002") });
-    new import_obsidian3.Setting(this.containerEl).setName(t("Mac\uFF1AXmind \u5E94\u7528\u8DEF\u5F84\uFF08\u53EF\u9009\uFF09")).setDesc(t("\u901A\u5E38\u7559\u7A7A\u5373\u53EF\u3002\u591A\u4E2A\u7248\u672C\u5171\u5B58\u65F6\u53EF\u6307\u5B9A .app \u8DEF\u5F84\u3002")).addText((text) => text.setPlaceholder("/Applications/Xmind.app").setValue(this.plugin.settings.macApp).onChange(async (value) => {
-      this.plugin.settings.macApp = value;
-      await this.plugin.saveData(this.plugin.settings);
-    }));
-    new import_obsidian3.Setting(this.containerEl).setName(t("Windows\uFF1AXmind.exe \u8DEF\u5F84\uFF08\u53EF\u9009\uFF09")).setDesc(t("\u7559\u7A7A\u65F6\u4F7F\u7528 .xmind \u7684\u7CFB\u7EDF\u9ED8\u8BA4\u5E94\u7528\uFF0C\u8BF7\u786E\u4FDD\u5B83\u662F Xmind\u3002\u4E5F\u53EF\u6307\u5B9A\u5B8C\u6574 .exe \u8DEF\u5F84\uFF1B\u4E0D\u8981\u6DFB\u52A0\u5F15\u53F7\u6216\u53C2\u6570\u3002")).addText((text) => text.setPlaceholder("C:\\\u2026\\Xmind.exe").setValue(this.plugin.settings.windowsApp).onChange(async (value) => {
-      this.plugin.settings.windowsApp = value;
-      await this.plugin.saveData(this.plugin.settings);
-    }));
+    this.containerEl.createEl("p", { text: t("\u8BF7\u5728\u7CFB\u7EDF\u4E2D\u5C06 .xmind \u7684\u9ED8\u8BA4\u6253\u5F00\u65B9\u5F0F\u8BBE\u4E3A Xmind\uFF1B\u63D2\u4EF6\u4E0D\u518D\u6307\u5B9A\u7A0B\u5E8F\u8DEF\u5F84\u3002") });
   }
 };
 // Annotate the CommonJS export names for ESM import in node:

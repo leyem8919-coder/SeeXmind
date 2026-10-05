@@ -1,5 +1,12 @@
 # Changelog / 更新记录
 
+## 0.2.2 — 2026-10-05
+
+- Remove Node.js child-process APIs and custom executable/application path settings. User-triggered external opening now passes only a validated `.xmind` path to the system default application on macOS and Windows.
+- Set Xmind as the system default for `.xmind` files before using external opening. Old custom paths are ignored; idle opacity is preserved.
+- Retain the 0.2.1 review fixes: minimum Obsidian 1.8.7, official language API, no browser storage, typed ZIP entries, and no deprecated/unused helpers.
+- Update English/Chinese instructions and privacy disclosure; stop showing the outdated custom-path settings screenshot in the READMEs.
+
 ## 0.2.1 — 2026-10-05
 
 - Correct the minimum Obsidian version to 1.8.7, matching the language API used by the plugin.
