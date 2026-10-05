@@ -17,6 +17,22 @@ SeeXmind is an independent, unofficial plugin. It is not affiliated with, endors
 - English and Simplified Chinese interface, following Obsidian's current language where available; other languages fall back to English.
 - Optional macOS `.app` and Windows `.exe` paths.
 
+## Screenshots
+
+Screenshots supplied by the maintainer, showing the macOS interface in Simplified Chinese.
+
+**Original image preview and floating controls**
+
+![Original Xmind image preview](docs/images/preview.png)
+
+**Interactive Markdown embeds**
+
+![Independent previews embedded in a note](docs/images/embed.png)
+
+**Custom application paths and idle opacity**
+
+![SeeXmind settings](docs/images/settings.png)
+
 ## Installation
 
 Requires desktop Obsidian 1.5.0 or later. macOS and Windows are supported; mobile is not supported. We recommend installing [Xmind](https://xmind.app/) separately for editing. Previewing supported files does not require an Xmind account or a running Xmind app.
@@ -75,7 +91,7 @@ Xmind, Obsidian, GitHub, and any vault synchronization or network storage servic
 
 ## Compatibility and limitations
 
-Version 0.2.0 was checked in macOS Obsidian 1.13.7 for standalone previews, floating controls, opacity, multi-sheet selection, and independent Markdown embeds in Live Preview and Reading view. Automated tests cover archive validation, sheet parsing, localization, settings, and macOS/Windows opening arguments. **Actual Windows desktop verification remains pending.**
+Version 0.2.0 was checked in macOS Obsidian 1.13.7 for standalone previews, floating controls, opacity, multi-sheet selection, and independent Markdown embeds in Live Preview and Reading view. Automated tests cover archive validation, sheet parsing, localization, settings, and macOS/Windows opening arguments. The maintainer also reported successful Windows desktop testing on 2026-10-05; exact Windows, Obsidian, and Xmind versions were not recorded.
 
 SeeXmind is a viewer and launcher, not a mind-map editor. Saving, exporting, account features, and any paid Xmind functionality remain the responsibility of Xmind.
 

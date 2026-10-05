@@ -17,6 +17,22 @@ SeeXmind 是独立的非官方插件，与 Xmind、Obsidian 无隶属、赞助�
 - 界面支持英文、简体中文，尽量跟随 Obsidian 当前语言；其他语言回退到英文。
 - 可自定义 Mac `.app` 和 Windows `.exe` 路径。
 
+## 截图
+
+以下为维护者提供的 macOS 简体中文界面截图。
+
+**原始图片预览与悬浮按钮**
+
+![原始图片预览](docs/images/preview.png)
+
+**Markdown 内嵌预览**
+
+![笔记中的独立预览](docs/images/embed.png)
+
+**自定义程序路径和闲置不透明度**
+
+![插件设置](docs/images/settings.png)
+
 ## 安装
 
 需要桌面版 Obsidian 1.5.0 或以上，支持 macOS 和 Windows，不支持手机和平板。建议另外安装 [Xmind](https://xmind.app/) 以便编辑。预览受支持的文件不需要 Xmind 账号，也不需要让 Xmind 一直运行。
@@ -75,7 +91,7 @@ Xmind、Obsidian、GitHub，以及 iCloud、网络盘等同步或存储服务各
 
 ## 验证与限制
 
-0.2.0 已在 macOS 的 Obsidian 1.13.7 中检查独立文件预览、浮动按钮、透明度、多画布切换，以及实时预览和阅读模式中的多个独立嵌入。自动化测试覆盖压缩包校验、画布解析、语言、设置及 Mac/Windows 启动参数。**Windows 实际桌面验证仍待完成。**
+0.2.0 已在 macOS 的 Obsidian 1.13.7 中检查独立文件预览、浮动按钮、透明度、多画布切换，以及实时预览和阅读模式中的多个独立嵌入。自动化测试覆盖压缩包校验、画布解析、语言、设置及 Mac/Windows 启动参数。维护者已于 2026-10-05 确认 Windows 端实测通过；本次未记录 Windows、Obsidian 和 Xmind 的具体版本。
 
 SeeXmind 提供查看和打开功能，不是思维导图编辑器。编辑、保存、导出、账号和付费能力由 Xmind 提供。
 
