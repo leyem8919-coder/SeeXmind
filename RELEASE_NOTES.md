@@ -10,6 +10,4 @@ Requires desktop Obsidian **1.8.7 or later**.
 
 Download the three assets into `.obsidian/plugins/seexmind/`, retain `data.json`, and reload the plugin. Full source remains private.
 
-Automated tests and build checks passed. The restored opening behavior matches 0.2.1; no new Windows GUI test has been performed for this patch.
-
 [English instructions](https://github.com/leyem8919-coder/SeeXmind#external-application-capability-warning) · [简体中文](https://github.com/leyem8919-coder/SeeXmind/blob/main/README.zh-CN.md)

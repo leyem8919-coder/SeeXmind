@@ -37,7 +37,9 @@ Screenshots supplied by the maintainer, showing the macOS interface in Simplifie
 
 Requires desktop Obsidian 1.8.7 or later. macOS and Windows are supported; mobile is not supported. We recommend installing [Xmind](https://xmind.app/) separately for editing. Previewing supported files does not require an Xmind account or a running Xmind app.
 
-If SeeXmind is available in **Settings → Community plugins → Browse**, search for **SeeXmind**, install it, and enable it. If it is not listed, use manual installation:
+Install SeeXmind from **Settings → Community plugins → Browse**: search for **SeeXmind**, install it, and enable it. You can also open its [official listing](https://community.obsidian.md/plugins/seexmind) and select **Add to Obsidian**.
+
+For manual installation:
 
 1. Download `main.js`, `manifest.json`, and `styles.css` from the same [public release](https://github.com/leyem8919-coder/SeeXmind/releases/latest).
 2. Put all three in `<your-vault>/.obsidian/plugins/seexmind/`.
@@ -65,7 +67,6 @@ Maps/Study plan.xmind
 ```
 ````
 
-The native Live Preview integration uses a capability-checked Obsidian embedding hook. Reading view and the code-block renderer provide fallbacks; future Obsidian changes may require a plugin update.
 
 ### Choose a preview mode or sheet
 
@@ -102,9 +103,9 @@ Xmind, Obsidian, GitHub, and any vault synchronization or network storage servic
 
 **Upgrading from 0.2.2:** custom paths are restored in 0.2.3. If you saved settings in 0.2.2, those paths may have been removed; enter them again. Existing idle opacity is preserved.
 
-## Compatibility and limitations
+## Supported platforms
 
-Version 0.2.0 was checked in macOS Obsidian 1.13.7 for standalone previews, floating controls, opacity, multi-sheet selection, and independent Markdown embeds in Live Preview and Reading view. Automated tests cover archive validation, sheet parsing, localization, settings, and macOS/Windows opening arguments. The maintainer also reported successful Windows desktop testing on 2026-10-05; exact Windows, Obsidian, and Xmind versions were not recorded.
+SeeXmind supports desktop Obsidian on macOS and Windows.
 
 SeeXmind is a viewer and launcher, not a mind-map editor. Saving, exporting, account features, and any paid Xmind functionality remain the responsibility of Xmind.
 

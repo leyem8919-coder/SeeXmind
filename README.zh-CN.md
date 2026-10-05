@@ -37,7 +37,9 @@ SeeXmind 是独立的非官方插件，与 Xmind、Obsidian 无隶属、赞助�
 
 需要桌面版 Obsidian 1.8.7 或以上，支持 macOS 和 Windows，不支持手机和平板。建议另外安装 [Xmind](https://xmind.app/) 以便编辑。预览受支持的文件不需要 Xmind 账号，也不需要让 Xmind 一直运行。
 
-如果社区插件目录已能搜索到 **SeeXmind**，可以直接安装并启用；尚未显示时可以手动安装：
+在 **设置 → 第三方插件 → 浏览** 中搜索 **SeeXmind**，安装并启用。也可以打开[官方插件页面](https://community.obsidian.md/plugins/seexmind)，点击 **Add to Obsidian**。
+
+手动安装方法：
 
 1. 从同一个[公开版本](https://github.com/leyem8919-coder/SeeXmind/releases/latest)下载 `main.js`、`manifest.json`、`styles.css`。
 2. 把三个文件放进 `<你的库>/.obsidian/plugins/seexmind/`。
@@ -64,8 +66,6 @@ SeeXmind 是独立的非官方插件，与 Xmind、Obsidian 无隶属、赞助�
 Maps/学习计划.xmind
 ```
 ````
-
-实时预览使用经过可用性检查的 Obsidian 原生嵌入接口；阅读模式和代码块提供回退方式。未来 Obsidian 调整接口时，可能需要更新插件。
 
 ### 原始图片与多画布预览的区别
 
@@ -102,9 +102,9 @@ Xmind、Obsidian、GitHub，以及 iCloud、网络盘等同步或存储服务各
 
 **从 0.2.2 升级：** 0.2.3 已恢复自定义路径。如果在 0.2.2 中保存过设置，旧路径可能已被清除，需要重新填写；现有不透明度会保留。
 
-## 验证与限制
+## 支持平台
 
-0.2.0 已在 macOS 的 Obsidian 1.13.7 中检查独立文件预览、浮动按钮、透明度、多画布切换，以及实时预览和阅读模式中的多个独立嵌入。自动化测试覆盖压缩包校验、画布解析、语言、设置及 Mac/Windows 启动参数。维护者已于 2026-10-05 确认 Windows 端实测通过；本次未记录 Windows、Obsidian 和 Xmind 的具体版本。
+支持 macOS 和 Windows 桌面版 Obsidian。
 
 SeeXmind 提供查看和打开功能，不是思维导图编辑器。编辑、保存、导出、账号和付费能力由 Xmind 提供。
 
