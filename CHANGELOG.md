@@ -1,5 +1,11 @@
 # Changelog / 更新记录
 
+## 0.2.3 — 2026-10-05
+
+- Restore custom macOS `.app` and Windows `.exe` paths and user-triggered process launching. Keep the 0.2.1 language, minimum-version, typing and deprecated API fixes.
+- Explain the expected Shell Execution capability warning in English/Chinese documentation and beside path settings. The plugin does not request administrator elevation; custom programs must be trusted.
+- Restore the settings screenshot. Existing paths load when present; paths removed by saving settings in 0.2.2 must be entered again. Preserve opacity.
+
 ## 0.2.2 — 2026-10-05
 
 - Remove Node.js child-process APIs and custom executable/application path settings. User-triggered external opening now passes only a validated `.xmind` path to the system default application on macOS and Windows.

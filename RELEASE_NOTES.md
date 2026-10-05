@@ -1,14 +1,15 @@
-# SeeXmind 0.2.2
+# SeeXmind 0.2.3
 
 Requires desktop Obsidian **1.8.7 or later**.
 
-- Removes Node.js child-process APIs and custom application path settings.
-- Double-click and Open in Xmind now use the system default application for the selected `.xmind` file. **Set Xmind as the default for `.xmind` in macOS/Windows first.** Old custom paths are ignored; idle opacity is preserved.
-- Retains all 0.2.1 review fixes for language detection, compatibility, typing, deprecated APIs and unused code.
-- Updates privacy disclosure and English/Chinese setup instructions. No browser localStorage/sessionStorage or process-execution APIs remain in the runtime.
+- Restores optional macOS `.app` and Windows `.exe` paths. Paths saved before 0.2.2 are reused if still present; if you saved settings in 0.2.2, you may need to enter them again. Opacity is preserved.
+- Retains the 0.2.1 fixes for language detection, API compatibility, typing, and deprecated/unused code.
+- Adds clear capability disclosure in English/Chinese documentation and path settings.
 
-Download the three assets into `.obsidian/plugins/seexmind/` and reload the plugin. Preserve `data.json` to retain opacity. Structure previews, embedded images, sheets and Markdown embeds are unchanged.
+**Expected Shell Execution warning:** Node.js process-launching APIs are used only when you actively open a file in Xmind. Paths are validated; arguments are passed separately, without a shell interpreter. The plugin does not request administrator elevation. The chosen application runs with your existing permissions and receives the file path; select only a trusted local Xmind installation. This is not a sandbox or a claim that the capability warning has disappeared.
 
-Automated path-validation, parsing, localization and settings tests and TypeScript checks passed. Version 0.2.0 was tested on macOS and reported working on Windows by the maintainer. The changed external opening behavior in this patch still needs a fresh desktop GUI test.
+Download the three assets into `.obsidian/plugins/seexmind/`, retain `data.json`, and reload the plugin. Full source remains private.
 
-[English instructions](https://github.com/leyem8919-coder/SeeXmind#readme) · [简体中文](https://github.com/leyem8919-coder/SeeXmind/blob/main/README.zh-CN.md)
+Automated tests and build checks passed. The restored opening behavior matches 0.2.1; no new Windows GUI test has been performed for this patch.
+
+[English instructions](https://github.com/leyem8919-coder/SeeXmind#external-application-capability-warning) · [简体中文](https://github.com/leyem8919-coder/SeeXmind/blob/main/README.zh-CN.md)

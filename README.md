@@ -15,7 +15,7 @@ SeeXmind is an independent, unofficial plugin. It is not affiliated with, endors
 - Open the original with the floating **Open in Xmind** button at the bottom-right.
 - Set idle control opacity from **0% to 100%**. Hover or keyboard focus always reveals the controls.
 - English and Simplified Chinese interface, following Obsidian's current language where available; other languages fall back to English.
-- Open originals through the system default application for `.xmind` files; no custom executable or command is run by the plugin.
+- Optional macOS `.app` and Windows `.exe` paths.
 
 ## Screenshots
 
@@ -29,7 +29,9 @@ Screenshots supplied by the maintainer, showing the macOS interface in Simplifie
 
 ![Independent previews embedded in a note](docs/images/embed.png)
 
-**Settings in 0.2.2:** idle opacity is adjustable. The earlier custom application path settings have been removed; select Xmind through your operating system instead.
+**Custom application paths and idle opacity**
+
+![SeeXmind settings](docs/images/settings.png)
 
 ## Installation
 
@@ -77,21 +79,32 @@ SeeXmind never relabels one embedded image as another sheet. If exact appearance
 - Right toolbar: **Zoom in**, **Zoom out**, **Fit to window**, **Refresh preview**.
 - Scroll over the map to zoom, drag to pan. With the canvas focused, `+` / `-` zoom and `0` fits the map.
 - **Floating controls idle opacity** applies immediately to open previews. At 0%, controls remain in their usual positions and appear on hover or keyboard focus.
-- **Default application:** set Xmind as the default for `.xmind` files in your operating system. On macOS, use Finder → Get Info → Open with → Xmind → Change All. On Windows, use the file's Open with menu to select Xmind as the default application.
-- **Upgrading from 0.2.1 or earlier:** saved custom application paths are no longer used. Idle opacity is preserved. If several Xmind versions are installed, choose the desired version in the system default-app settings.
+- **Mac application path:** leave blank to use the installed Xmind, or enter a full path such as `/Applications/Xmind.app`.
+- **Windows executable path:** leave blank to use the `.xmind` file association, or enter the full path to `Xmind.exe`. Do not add quotes or command-line arguments.
 - After changing Obsidian's language, reopen the preview or reload the plugin to refresh existing interface labels.
+
+## External application capability warning
+
+The directory may show **“Shell Execution / child_process”**. SeeXmind uses Node.js process-launching APIs to open Xmind on macOS (including a custom `.app`) or a user-selected `.exe` on Windows. Windows with no custom path uses the system file association.
+
+- Launching happens only after you double-click a file or choose an Open in Xmind button, command, or menu item. Loading the plugin and displaying previews do not launch the application.
+- Local `.xmind` paths and custom application paths are validated. The executable and arguments are passed separately, without concatenated shell command strings or a shell interpreter.
+- SeeXmind does not request administrator elevation. This warning describes a powerful API available to the plugin; it is not a request for administrator or Full Disk Access permission.
+- This is **not a sandbox or a guarantee of safety**. The selected program runs with the current user's permissions and receives the file path. A malicious executable can cause harm: choose only a trusted local Xmind installation. File-extension checks do not verify the publisher or contents of that program.
+
+We retain and disclose this capability to support custom application paths; we do not hide it or claim the warning has been eliminated. The plugin does not initiate network requests or collect telemetry; external applications have their own behavior. See [PRIVACY.md](PRIVACY.md).
 
 ## Privacy and scope
 
-The plugin processes previews locally in memory and does not initiate network requests, load remote resources, upload documents, collect analytics, or run telemetry. It reads the selected vault file through Obsidian's API and saves opacity through Obsidian’s plugin settings API. Only a user action passes the selected `.xmind` path to the operating system’s default application. Version 0.2.2 removes the Node.js process-launching dependency and does not request administrator privileges. This narrows the implementation; it does not create a security sandbox.
+The plugin processes previews locally in memory and does not initiate network requests, load remote resources, upload documents, collect analytics, or run telemetry. It reads the selected vault file through Obsidian's API and saves application paths and opacity in local plugin settings. Opening Xmind is a user-triggered action that passes the selected local file path to the installed app.
 
 Xmind, Obsidian, GitHub, and any vault synchronization or network storage services have their own network behavior and privacy policies. Obsidian plugins are not security-sandboxed. See [PRIVACY.md](PRIVACY.md).
 
+**Upgrading from 0.2.2:** custom paths are restored in 0.2.3. If you saved settings in 0.2.2, those paths may have been removed; enter them again. Existing idle opacity is preserved.
+
 ## Compatibility and limitations
 
-Version 0.2.0 was checked in macOS Obsidian 1.13.7 for standalone previews, floating controls, opacity, multi-sheet selection, and independent Markdown embeds in Live Preview and Reading view. Automated tests cover archive validation, sheet parsing, localization, settings, and macOS/Windows local file-path validation. The maintainer also reported successful Windows desktop testing on 2026-10-05; exact Windows, Obsidian, and Xmind versions were not recorded.
-
-Version 0.2.2 changes external opening to the system default application; this change has automated validation, and a fresh Windows GUI check is still needed.
+Version 0.2.0 was checked in macOS Obsidian 1.13.7 for standalone previews, floating controls, opacity, multi-sheet selection, and independent Markdown embeds in Live Preview and Reading view. Automated tests cover archive validation, sheet parsing, localization, settings, and macOS/Windows opening arguments. The maintainer also reported successful Windows desktop testing on 2026-10-05; exact Windows, Obsidian, and Xmind versions were not recorded.
 
 SeeXmind is a viewer and launcher, not a mind-map editor. Saving, exporting, account features, and any paid Xmind functionality remain the responsibility of Xmind.
 
