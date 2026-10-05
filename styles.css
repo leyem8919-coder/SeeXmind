@@ -1,9 +1,19 @@
 .workspace-leaf-content .view-content.seexmind-view { display: flex; flex-direction: column; height: 100%; padding: 0; overflow: hidden; }
-.seexmind-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--background-modifier-border); }
-.seexmind-toolbar button { cursor: pointer; }
-.seexmind-scale { min-width: 44px; text-align: center; font-variant-numeric: tabular-nums; font-size: var(--font-ui-small); }
+/* Opacity never removes hit targets: even at 0%, hover and keyboard focus reveal controls. */
+.seexmind-canvas { position: relative; flex: 1; min-height: 220px; overflow: hidden; }
+.seexmind-floating { opacity: var(--seexmind-idle-opacity, .35); transition: opacity 160ms ease; z-index: 2; }
+.seexmind-floating:hover, .seexmind-floating:focus-within { opacity: 1; }
+.seexmind-tools { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 6px; border: 1px solid var(--background-modifier-border); border-radius: 12px; background: var(--background-primary); box-shadow: 0 2px 10px #0002; }
+.seexmind-tools .seexmind-icon-button { width: 34px; height: 34px; padding: 7px; cursor: pointer; }
+.seexmind-icon-button svg, .seexmind-open-icon svg { width: 18px; height: 18px; }
+.seexmind-scale { width: 34px; text-align: center; font-variant-numeric: tabular-nums; font-size: 10px; color: var(--text-muted); pointer-events: none; }
+.seexmind-view .seexmind-open { position: absolute; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 8px; height: 38px; padding: 8px 12px; border-radius: 10px; cursor: pointer; box-shadow: 0 2px 10px #0002; }
+.seexmind-open-icon { display: flex; }
+.seexmind-floating button:focus-visible, .seexmind-open:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .seexmind-floating { transition: none; } }
+@media (max-height: 480px) { .seexmind-tools { top: 8px; transform: none; gap: 2px; } }
 .seexmind-status { padding: 8px 16px; color: var(--text-muted); font-size: var(--font-ui-small); }
-.seexmind-stage { position: relative; flex: 1; min-height: 160px; overflow: hidden; background: #fff; cursor: grab; touch-action: none; }
+.seexmind-stage { position: absolute; inset: 0; overflow: hidden; background: #fff; cursor: grab; touch-action: none; }
 .seexmind-stage.is-dragging { cursor: grabbing; }
 .seexmind-view .seexmind-stage > img.seexmind-image { position: absolute; left: 50%; top: 50%; max-width: none; max-height: none; transform-origin: center; user-select: none; pointer-events: none; }
 .seexmind-image[hidden] { display: none; }

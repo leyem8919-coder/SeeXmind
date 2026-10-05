@@ -1,12 +1,7 @@
-SeeXmind 0.1.3 fixes directory review findings while retaining custom Xmind application paths.
+# SeeXmind 0.1.4
 
-- Pure in-memory ZIP preview reading through the Obsidian Vault API; no runtime Node filesystem dependency.
-- CSS selectors no longer use `!important`.
-- English installation and usage documentation included.
-- macOS custom `.app` and Windows custom `.exe` remain supported. User-triggered process execution is still disclosed; no shell command strings are evaluated.
-- Only `main.js`, `manifest.json`, and `styles.css` are attached for installation. Full project/dependency license notices are embedded in `main.js` and available in the repository.
-- GitHub attestations cover assembly of these public distribution files. Private-source compilation is verified separately by the Obsidian directory against the matching private tag.
+Preview controls now float vertically on the right; Open in Xmind floats at the bottom-right. Icon buttons include hover labels. Settings support idle opacity from 0 to 100% (default 35%), applied immediately. Hover and keyboard focus restore full visibility, including when set to 0%.
 
-Install these three files in `.obsidian/plugins/seexmind/`, then reload SeeXmind. Windows GUI testing remains pending. Embedded previews in ZIP64 or split ZIP archives are not supported.
+Custom macOS/Windows app paths remain supported. No changes to local preview extraction or network behavior. macOS UI and 23 automated tests passed; Windows GUI verification remains pending.
 
-Also fixes private-source review errors: preserve panes on unload, remove redundant setting headings, validate saved settings, use window timers, and expose custom paths in settings search.
+Download main.js, manifest.json, and styles.css from this public release. Private source access is not required.

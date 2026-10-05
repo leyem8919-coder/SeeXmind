@@ -784,9 +784,14 @@ function planOpen(platform, file, customApp = "") {
   throw new Error("\u76EE\u524D\u652F\u6301 macOS \u548C Windows\u3002");
 }
 
+// src/settings.ts
+function normalizeOpacity(value) {
+  return typeof value === "number" && Number.isFinite(value) ? Math.min(100, Math.max(0, Math.round(value))) : 35;
+}
+
 // src/main.ts
 var VIEW_TYPE = "seexmind-preview";
-var DEFAULTS = { macApp: "", windowsApp: "" };
+var DEFAULTS = { macApp: "", windowsApp: "", idleOpacity: 35 };
 var isXmind = (file) => file instanceof import_obsidian.TFile && file.extension.toLowerCase() === "xmind";
 var SeeXmind = class extends import_obsidian.Plugin {
   constructor() {
@@ -799,7 +804,8 @@ var SeeXmind = class extends import_obsidian.Plugin {
     if (stored && typeof stored === "object") {
       this.settings = {
         macApp: "macApp" in stored && typeof stored.macApp === "string" ? stored.macApp : "",
-        windowsApp: "windowsApp" in stored && typeof stored.windowsApp === "string" ? stored.windowsApp : ""
+        windowsApp: "windowsApp" in stored && typeof stored.windowsApp === "string" ? stored.windowsApp : "",
+        idleOpacity: normalizeOpacity("idleOpacity" in stored ? stored.idleOpacity : void 0)
       };
     }
     this.registerView(VIEW_TYPE, (leaf) => new XmindView(leaf, this));
@@ -846,6 +852,13 @@ var SeeXmind = class extends import_obsidian.Plugin {
     };
     attach(document);
     this.registerEvent(this.app.workspace.on("window-open", (_win, win) => attach(win.document)));
+  }
+  async setIdleOpacity(value) {
+    this.settings.idleOpacity = normalizeOpacity(value);
+    this.app.workspace.getLeavesOfType(VIEW_TYPE).forEach((leaf) => {
+      if (leaf.view instanceof XmindView) leaf.view.updateControlOpacity();
+    });
+    await this.saveData(this.settings);
   }
   async openInXmind(file) {
     if (this.opening.has(file.path)) return;
@@ -910,26 +923,32 @@ var XmindView = class extends import_obsidian.FileView {
   async onOpen() {
     this.contentEl.empty();
     this.contentEl.addClass("seexmind-view");
-    const toolbar = this.contentEl.createDiv({ cls: "seexmind-toolbar" });
-    const button = (text, label, action) => {
-      const b = toolbar.createEl("button", { text, attr: { "aria-label": label, title: label } });
+    this.updateControlOpacity();
+    this.status = this.contentEl.createDiv({ cls: "seexmind-status", attr: { role: "status", "aria-live": "polite" } });
+    const canvas = this.contentEl.createDiv({ cls: "seexmind-canvas" });
+    this.stage = canvas.createDiv({ cls: "seexmind-stage", attr: { tabindex: "0", "aria-label": "Xmind \u56FE\u7247\u9884\u89C8\uFF1B\u6EDA\u8F6E\u7F29\u653E\uFF0C\u62D6\u52A8\u5E73\u79FB\uFF0C\u6309 0 \u9002\u5E94\u7A97\u53E3" } });
+    this.img = this.stage.createEl("img", { cls: "seexmind-image", attr: { draggable: "false", alt: "Xmind \u5185\u7F6E\u9884\u89C8" } });
+    this.img.hidden = true;
+    const toolbar = canvas.createDiv({ cls: "seexmind-tools seexmind-floating", attr: { role: "group", "aria-label": "\u9884\u89C8\u5DE5\u5177" } });
+    const iconButton = (icon, label, action) => {
+      const b = toolbar.createEl("button", { cls: "seexmind-icon-button", attr: { type: "button", "aria-label": label, "data-tooltip-position": "left" } });
+      (0, import_obsidian.setIcon)(b, icon);
       this.registerDomEvent(b, "click", action);
       return b;
     };
-    button("\u7528 Xmind \u6253\u5F00 \u2197", "\u7528 Xmind \u7F16\u8F91\u539F\u6587\u4EF6", () => {
-      if (this.file) void this.plugin.openInXmind(this.file);
-    }).addClass("mod-cta");
-    button("\u2212", "\u7F29\u5C0F", () => this.zoom(this.scale / 1.25));
-    this.scaleLabel = toolbar.createSpan({ cls: "seexmind-scale", text: "100%" });
-    button("+", "\u653E\u5927", () => this.zoom(this.scale * 1.25));
-    button("\u9002\u5E94\u7A97\u53E3", "\u663E\u793A\u5B8C\u6574\u9884\u89C8", () => this.fit());
-    button("\u5237\u65B0", "\u91CD\u65B0\u8BFB\u53D6\u5DF2\u4FDD\u5B58\u7684\u9884\u89C8", () => {
+    iconButton("plus", "\u653E\u5927", () => this.zoom(this.scale * 1.25));
+    iconButton("minus", "\u7F29\u5C0F", () => this.zoom(this.scale / 1.25));
+    iconButton("maximize", "\u9002\u5E94\u7A97\u53E3", () => this.fit());
+    iconButton("refresh-cw", "\u5237\u65B0\u9884\u89C8", () => {
       if (this.file) void this.onLoadFile(this.file);
     });
-    this.status = this.contentEl.createDiv({ cls: "seexmind-status", attr: { role: "status", "aria-live": "polite" } });
-    this.stage = this.contentEl.createDiv({ cls: "seexmind-stage", attr: { tabindex: "0", "aria-label": "Xmind \u56FE\u7247\u9884\u89C8\uFF1B\u6EDA\u8F6E\u7F29\u653E\uFF0C\u62D6\u52A8\u5E73\u79FB\uFF0C\u6309 0 \u9002\u5E94\u7A97\u53E3" } });
-    this.img = this.stage.createEl("img", { cls: "seexmind-image", attr: { draggable: "false", alt: "Xmind \u5185\u7F6E\u9884\u89C8" } });
-    this.img.hidden = true;
+    this.scaleLabel = toolbar.createSpan({ cls: "seexmind-scale", text: "100%" });
+    const open = canvas.createEl("button", { cls: "seexmind-open seexmind-floating mod-cta", attr: { type: "button", "aria-label": "\u7528 Xmind \u7F16\u8F91\u539F\u6587\u4EF6", "data-tooltip-position": "top" } });
+    open.createSpan({ text: "\u7528 Xmind \u6253\u5F00" });
+    (0, import_obsidian.setIcon)(open.createSpan({ cls: "seexmind-open-icon" }), "external-link");
+    this.registerDomEvent(open, "click", () => {
+      if (this.file) void this.plugin.openInXmind(this.file);
+    });
     this.contentEl.createDiv({ cls: "seexmind-footer", text: "\u5185\u7F6E\u9884\u89C8 \xB7 \u6EDA\u8F6E\u7F29\u653E / \u62D6\u52A8\u5E73\u79FB \xB7 \u7F16\u8F91\u540E\u5728 Xmind \u4FDD\u5B58\u5373\u53EF\u5237\u65B0" });
     this.registerDomEvent(this.stage, "wheel", (event) => {
       if (this.img.hidden) return;
@@ -980,6 +999,9 @@ var XmindView = class extends import_obsidian.FileView {
     this.registerEvent(this.app.workspace.on("window-open", () => {
       if (this.fitMode) this.fit();
     }));
+  }
+  updateControlOpacity() {
+    this.contentEl.style.setProperty("--seexmind-idle-opacity", String(this.plugin.settings.idleOpacity / 100));
   }
   scheduleRefresh() {
     window.clearTimeout(this.refreshTimer);
@@ -1069,13 +1091,22 @@ var XmindSettings = class extends import_obsidian.PluginSettingTab {
         name: "Windows: Xmind.exe \u8DEF\u5F84",
         desc: "\u53EF\u9009\uFF1A\u5B8C\u6574 .exe \u8DEF\u5F84\uFF0C\u4E0D\u52A0\u5F15\u53F7\u6216\u53C2\u6570\uFF1B\u7559\u7A7A\u4F7F\u7528\u7CFB\u7EDF\u6587\u4EF6\u5173\u8054\u3002",
         control: { type: "text", key: "windowsApp", defaultValue: "", placeholder: "C:\\\u2026\\Xmind.exe" }
+      },
+      {
+        name: "\u60AC\u6D6E\u6309\u94AE\u95F2\u7F6E\u4E0D\u900F\u660E\u5EA6",
+        desc: "0% \u5B8C\u5168\u9690\u85CF\uFF0C100% \u59CB\u7EC8\u663E\u793A\uFF1B\u9F20\u6807\u79FB\u5230\u6309\u94AE\u533A\u57DF\u6216\u952E\u76D8\u805A\u7126\u65F6\u6062\u590D\u663E\u793A\u3002\u7ACB\u5373\u751F\u6548\u3002",
+        control: { type: "slider", key: "idleOpacity", defaultValue: 35, min: 0, max: 100, step: 1, displayFormat: (value) => `${value}%` }
       }
     ];
   }
   getControlValue(key) {
-    return key === "macApp" || key === "windowsApp" ? this.plugin.settings[key] : void 0;
+    return key === "macApp" || key === "windowsApp" || key === "idleOpacity" ? this.plugin.settings[key] : void 0;
   }
   async setControlValue(key, value) {
+    if (key === "idleOpacity") {
+      await this.plugin.setIdleOpacity(value);
+      return;
+    }
     if ((key === "macApp" || key === "windowsApp") && typeof value === "string") {
       this.plugin.settings[key] = value;
       await this.plugin.saveData(this.plugin.settings);
@@ -1084,6 +1115,9 @@ var XmindSettings = class extends import_obsidian.PluginSettingTab {
   // Compatibility rendering for Obsidian versions before the declarative settings API.
   display() {
     this.containerEl.empty();
+    new import_obsidian.Setting(this.containerEl).setName("\u60AC\u6D6E\u6309\u94AE\u95F2\u7F6E\u4E0D\u900F\u660E\u5EA6").setDesc("0% \u5B8C\u5168\u9690\u85CF\uFF0C100% \u59CB\u7EC8\u663E\u793A\uFF1B\u60AC\u505C\u6216\u952E\u76D8\u805A\u7126\u65F6\u6062\u590D\u663E\u793A\u3002\u7ACB\u5373\u751F\u6548\u3002").addSlider((slider) => slider.setLimits(0, 100, 1).setValue(this.plugin.settings.idleOpacity).setDynamicTooltip().onChange((value) => {
+      void this.plugin.setIdleOpacity(value);
+    }));
     this.containerEl.createEl("p", { text: "\u9884\u89C8\u5B8C\u5168\u5728\u672C\u5730\u5B8C\u6210\u3002\u5355\u51FB\u6587\u4EF6\u67E5\u770B\u9884\u89C8\uFF0C\u53CC\u51FB\u7528 Xmind \u6253\u5F00\u3002" });
     new import_obsidian.Setting(this.containerEl).setName("Mac\uFF1AXmind \u5E94\u7528\u8DEF\u5F84\uFF08\u53EF\u9009\uFF09").setDesc("\u901A\u5E38\u7559\u7A7A\u5373\u53EF\u3002\u591A\u4E2A\u7248\u672C\u5171\u5B58\u65F6\u53EF\u6307\u5B9A .app \u8DEF\u5F84\u3002").addText((text) => text.setPlaceholder("/Applications/Xmind.app").setValue(this.plugin.settings.macApp).onChange(async (value) => {
       this.plugin.settings.macApp = value;

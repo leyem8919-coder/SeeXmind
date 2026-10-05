@@ -1,7 +1,7 @@
 {
   "id": "seexmind",
   "name": "SeeXmind",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "minAppVersion": "1.5.0",
   "description": "Preview embedded Xmind images locally; double-click to open the original in Xmind.",
   "author": "leyem8919-coder",

@@ -4,9 +4,23 @@
 
 SeeXmind previews the PNG image embedded in a local `.xmind` file without re-rendering its layout. Single-click a file in Obsidian to preview it; double-click to open the original in the desktop Xmind application. Zoom, pan, fit to window, and refresh after saved-file changes are supported.
 
+### Screenshots
+
+These user-provided screenshots show 0.1.3. In 0.1.4, preview controls float vertically on the right, the Xmind button sits at the bottom-right, and settings include adjustable idle opacity.
+
+Preview the image saved inside your Xmind file, with zoom, pan, fit, and refresh controls.
+
+![SeeXmind preview inside Obsidian](docs/images/preview.png)
+
+Set an optional custom Xmind application path on macOS or Windows.
+
+![Custom Xmind application path settings](docs/images/settings.png)
+
 ### Installation
 
-1. Download `main.js`, `manifest.json`, and `styles.css` from [GitHub Releases](https://github.com/leyem8919-coder/SeeXmind/releases/tag/0.1.3).
+Installable files are distributed from the **public SeeXmind repository**. You do not need access to the private source repository, which is used for development and source/build verification.
+
+1. Download `main.js`, `manifest.json`, and `styles.css` from [GitHub Releases](https://github.com/leyem8919-coder/SeeXmind/releases/tag/0.1.4).
 2. Create `.obsidian/plugins/seexmind/` inside your vault and place those three files directly inside it.
 3. Reload the community plugin list in Obsidian settings and enable **SeeXmind**.
 4. We recommend installing [Xmind from its official website](https://xmind.com/) separately for editing. Previewing embedded images does not require Xmind. On Windows, associate `.xmind` files with Xmind or specify the executable path in SeeXmind settings.
@@ -15,11 +29,15 @@ SeeXmind previews the PNG image embedded in a local `.xmind` file without re-ren
 
 Place an `.xmind` file inside your vault. Single-click it in the file explorer to preview, and double-click to edit it in Xmind. Use the mouse wheel or toolbar to zoom, drag to pan, and choose Fit to view the whole preview. Save changes in Xmind before refreshing. A missing, encrypted, outdated, or low-resolution embedded preview cannot be reconstructed by this plugin. Multi-sheet files may provide only one preview image.
 
+### Floating controls
+
+The right-side icon buttons zoom in/out, fit the preview, and refresh it. Hover to see their labels. The **Open in Xmind** button floats at the bottom-right. In settings, adjust idle opacity from **0–100%** (default **35%**). Controls become fully visible when hovered or keyboard-focused; even 0% keeps their hover targets and Tab navigation available. Changes apply immediately to open previews.
+
 ### Privacy, permissions, and project status
 
-SeeXmind itself makes no network requests and has no uploads, analytics, telemetry, or accounts. It reads selected vault files through Obsidian, stores optional application paths locally, and launches an installed application only on a user action. Previewing uses Obsidian’s Vault API and an in-memory ZIP reader; the bundled preview code does not import Node filesystem APIs. Desktop app opening uses Node process APIs and does not execute shell command strings. Xmind, Obsidian, network drives, and synchronization services operate under their own policies. See [PRIVACY.md](PRIVACY.md) for details.
+SeeXmind itself makes no network requests and has no uploads, analytics, telemetry, or accounts. It reads selected vault files through Obsidian, stores application paths and display preferences locally, and launches an installed application only on a user action. Previewing uses Obsidian’s Vault API and an in-memory ZIP reader; the bundled preview code does not import Node filesystem APIs. Desktop app opening uses Node process APIs and does not execute shell command strings. Xmind, Obsidian, network drives, and synchronization services operate under their own policies. See [PRIVACY.md](PRIVACY.md) for details.
 
-This independent project is not affiliated with, sponsored by, or endorsed by Xmind or Obsidian. It does not bundle their applications or bypass licenses, paid features, or encryption. Distributed files retain the existing [Apache-2.0 license](LICENSE) and [dependency notices](THIRD_PARTY_NOTICES.md); privately maintained source does not make the distributed JavaScript unreadable or proprietary. The plugin is desktop-only: macOS core behavior is tested; Windows GUI verification is pending. It has not yet been approved or published in the Obsidian community directory.
+This independent project is not affiliated with, sponsored by, or endorsed by Xmind or Obsidian. It does not bundle their applications or bypass licenses, paid features, or encryption. Distributed files retain the existing [Apache-2.0 license](LICENSE) and [dependency notices](THIRD_PARTY_NOTICES.md); privately maintained source does not make the distributed JavaScript unreadable or proprietary. The plugin is desktop-only: macOS core behavior is tested; Windows GUI verification is pending. Community-directory availability depends on the current listing status; the public GitHub release supports manual installation.
 
 ---
 
@@ -41,9 +59,17 @@ SeeXmind 是面向 macOS 和 Windows 桌面版 Obsidian 的独立第三方插件
 
 每份文件读取自己的 `Thumbnails/thumbnail.png`，不重新计算节点布局、字体和连接线。Mac 和 Windows 使用相同的读取方式，不依赖 macOS Quick Look。
 
+## 悬浮按钮
+
+右侧竖排四个图标：放大、缩小、适应窗口、刷新；悬停显示文字提示。「用 Xmind 打开」在右下角。设置中的「悬浮按钮闲置不透明度」支持 **0–100%**，默认 **35%**，修改立即生效；鼠标移到控件区域或键盘聚焦时完全显示。0% 时控件隐藏，但原位置仍可悬停唤出，也可使用 Tab 键定位。
+
+上方两张截图为 0.1.3，0.1.4 已采用上述浮动布局并增加透明度设置。
+
 ## 安装
 
-当前版本 **0.1.3**，尚未在 Obsidian 社区插件市场上架。支持 Obsidian 桌面版 1.5.0 或更新版本；macOS 已完成核心功能实测，Windows 实际桌面验证仍待完成。
+当前版本 **0.1.4**。社区目录可用性以市场页面状态为准；也可从公开 GitHub Release 手动安装。支持 Obsidian 桌面版 1.5.0 或更新版本；macOS 已完成核心功能实测，Windows 实际桌面验证仍待完成。
+
+**安装只需访问公开的 SeeXmind 仓库**。私有仓库用于开发与源码、构建校验，用户不需要从它下载，也不需要访问权限。
 
 1. 从 [Releases](https://github.com/leyem8919-coder/SeeXmind/releases) 下载 `main.js`、`manifest.json`、`styles.css`（不是 Source code 压缩包）。
 2. 在库内建立 `.obsidian/plugins/seexmind/` 文件夹，将这三个文件放进去。
@@ -66,7 +92,7 @@ SeeXmind 本身：
 - 不上传笔记、导图、文件路径或使用记录。
 - 不收集用户身份、设备标识或行为数据；没有统计分析、遥测、广告或崩溃上报。
 - 不要求注册 SeeXmind 账号，不需要 API 密钥，不安装或自动更新自身及依赖。
-- 只为预览读取用户选中的导图，不写入或改动 `.xmind` 内容；应用路径设置保存在本地插件配置中。
+- 只为预览读取用户选中的导图，不写入或改动 `.xmind` 内容；应用路径和显示偏好保存在本地插件配置中。
 
 上述描述限于 **SeeXmind 插件自身**。下载或更新插件需要 Obsidian、浏览器或 GitHub 联网；被打开的 Xmind、系统网络盘、iCloud、Obsidian Sync 等可能按各自的规则联网或同步文件。这些行为不受 SeeXmind 控制，不能据此理解为整台设备或所有相关应用都不会联网。
 
